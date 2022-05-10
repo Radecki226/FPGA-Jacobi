@@ -24,6 +24,10 @@ class Cordic:
         x = x_in.copy()
         y = y_in.copy()
         z = z_in.copy()
+        
+        x.rounding = "around"
+        y.rounding = "around"
+        z.rounding = "around"
 
         #d will be used as direction of rotation
         d = 0
@@ -40,7 +44,7 @@ class Cordic:
 
         #arctan array
         arctan = Fxp(np.array([np.arctan(1/(2**i)) for i in range(self._n_iterations)]),
-                     n_word=self._n_word, n_frac=self._n_frac, signed=self._is_signed)
+                     n_word=self._n_word, n_frac=self._n_frac, signed=self._is_signed, rounding = "around")
 
         for i in range(self._n_iterations):
             #Choose d based on 
@@ -55,13 +59,13 @@ class Cordic:
                 else:
                     d = -1
 
-            new_x = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac)
+            new_x = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
             new_x.equal(x - d*(y >> i))
 
-            new_y = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac)
+            new_y = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
             new_y.equal(y + d*(x >> i))
 
-            new_z = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac)
+            new_z = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
             new_z.equal(z - d*arctan[i])
 
             x.equal(new_x)
