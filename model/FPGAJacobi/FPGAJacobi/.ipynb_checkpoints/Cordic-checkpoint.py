@@ -1,6 +1,7 @@
 import numpy as np
 from fxpmath import Fxp
 
+
 class Cordic:
     
     def __init__(self, 
@@ -72,7 +73,10 @@ class Cordic:
             y.equal(new_y)
             z.equal(new_z)
         
-        x.equal( (x >> 1) + (x >> 3) - (x >> 6) - (x >> 9) - (x >> 13))
-        y.equal( (y >> 1) + (y >> 3) - (y >> 6) - (y >> 9) - (y >> 13))
+        def booth(x_in):
+            x_out = (x_in >> 0) - (x_in >> 1) + (x_in >> 3) - (x_in >> 5) + (x_in >> 6) - (x_in >> 8) + (x_in >> 9) - (x_in >> 12) + (x_in >> 13) - (x_in >> 14)
+            return x_out
+        x.equal(booth(x))
+        y.equal(booth(y))
 
         return(x,y,z)

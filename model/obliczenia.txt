@@ -1,0 +1,19 @@
+załadowanie danych: 64 takty
+
+round:
+cordic vectoring: 15 + kilka = 25
+cordic rotation: 4 * (15 + kilkanaście = 30) = 120
+
+sweep: 
+7 rund 
+
+calosc:
+
+4 sweepy
+
+czyli 28*120 = 40us
+
+
+Dla 12 byłoby:
+
+Generalnie można powiedzec ze to będzie n^2 + (15 + n + (n/2)*(15 + 2*n))*(n/2)*(n-1)

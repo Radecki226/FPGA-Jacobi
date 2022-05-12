@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="2.1115193"
-     inkscape:cx="195.83056"
-     inkscape:cy="151.78644"
+     inkscape:zoom="0.74653481"
+     inkscape:cx="410.56358"
+     inkscape:cy="91.757275"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
@@ -38,6 +38,18 @@
   </sodipodi:namedview>
   <defs
      id="defs2">
+    <rect
+       x="480"
+       y="160"
+       width="163.64045"
+       height="11.647909"
+       id="rect17274" />
+    <rect
+       x="205"
+       y="110"
+       width="410.00001"
+       height="35.000002"
+       id="rect12164" />
     <rect
        x="135"
        y="145"
@@ -162,18 +174,86 @@
        width="35"
        height="15"
        id="rect27499-8" />
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-6-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path5848-9-8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-6-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path5848-9-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-6-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path5848-9-6" />
+    </marker>
+    <rect
+       x="135"
+       y="145"
+       width="35"
+       height="15"
+       id="rect27499-4" />
+    <rect
+       x="135"
+       y="145"
+       width="35"
+       height="15"
+       id="rect27499-46" />
+    <rect
+       x="135"
+       y="145"
+       width="35"
+       height="15"
+       id="rect27499-43" />
   </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#aaffcc;stroke:#000000;stroke-width:0.179674;stroke-linejoin:round"
+       style="fill:#aaeeff;stroke:#000000;stroke-width:0.179674;stroke-linejoin:round"
        id="rect1039"
        width="112.82438"
        height="56.826767"
        x="49.557972"
        y="26.166567" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-6-2)"
+       d="m 162.45417,51.59375 h 15.875 v 0"
+       id="path5739-0-0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-6-0)"
+       d="m 162.45417,60.854167 h 15.875 v 0"
+       id="path5739-0-7" />
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-1.0632458,5.1390215)"
@@ -181,28 +261,20 @@
        style="font-size:26.6667px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect3917)"><tspan
          x="347.60547"
          y="193.77806"
-         id="tspan4465">CORDIC</tspan></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 33.072916,34.395833 h 15.875 v 0"
-       id="path5739" />
+         id="tspan20181">CORDIC</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(0.26458333)"
        id="text11545"
        style="line-height:1.25;font-family:sans-serif;font-size:5.33333333px;white-space:pre;shape-inside:url(#rect11547)" />
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,-7.0440036,3.1011337)"
-       id="text16501"
-       style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect16503)"><tspan
-         x="130"
-         y="119.86576"
-         id="tspan4467">mode_i</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-6)"
        d="m 33.072917,43.65625 h 15.875 v 0"
        id="path5739-0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-6-8)"
+       d="m 162.45417,43.65625 h 15.875 v 0"
+       id="path5739-0-1" />
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-7.0440024,12.36155)"
@@ -210,10 +282,10 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect16503-1)"><tspan
          x="130"
          y="119.86576"
-         id="tspan4469">x_in_i</tspan></text>
+         id="tspan20183">x_in_i</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-2)"
-       d="m 33.072917,50.270833 h 15.875 v 0"
+       d="m 33.072917,51.59375 h 15.875 v 0"
        id="path5739-5" />
     <text
        xml:space="preserve"
@@ -222,7 +294,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect16503-5)"><tspan
          x="130"
          y="119.86576"
-         id="tspan4471">y_in_i</tspan></text>
+         id="tspan20185">y_in_i</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend-68)"
        d="m 33.072915,60.854167 h 15.875 v 0"
@@ -234,30 +306,67 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect16503-9)"><tspan
          x="130"
          y="119.86576"
-         id="tspan4473">z_in_i</tspan></text>
+         id="tspan20187">z_in_i</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,0.44301909,2.7467184)"
+       transform="matrix(0.26458333,0,0,0.26458333,0.73098149,2.4809069)"
        id="text27497"
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499)"><tspan
          x="135"
          y="149.86576"
-         id="tspan4475">Q(1.1.15)</tspan></text>
+         id="tspan20189">Q(1.4.15)</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,0.44301905,9.3613015)"
+       transform="matrix(0.26458333,0,0,0.26458333,130.62862,10.402282)"
+       id="text27497-3"
+       style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499-4)"><tspan
+         x="135"
+         y="149.86576"
+         id="tspan20191">Q(1.4.15)</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,130.40211,19.584383)"
+       id="text27497-8"
+       style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499-46)"><tspan
+         x="135"
+         y="149.86576"
+         id="tspan20193">Q(1.4.15)</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,130.59402,2.3795793)"
+       id="text27497-54"
+       style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499-43)"><tspan
+         x="135"
+         y="149.86576"
+         id="tspan20195">Q(1.4.15)</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,0.88603813,10.313793)"
        id="text27497-7"
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499-9)"><tspan
          x="135"
          y="149.86576"
-         id="tspan4477">Q(1.1.15</tspan></text>
+         id="tspan20197">Q(1.4.15)</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,0.44301905,19.944634)"
+       transform="matrix(0.26458333,0,0,0.26458333,0.97464195,19.545917)"
        id="text27497-5"
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect27499-8)"><tspan
          x="135"
          y="149.86576"
-         id="tspan4479">Q(1.1.15</tspan></text>
+         id="tspan20199">Q(1.4.15)</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text12162"
+       style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect12164)"><tspan
+         x="205"
+         y="128.24661"
+         id="tspan20201">MODE ROTATION / MODE VECTORING</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text17272"
+       style="line-height:1.25;font-family:sans-serif;font-size:5.33333333px;white-space:pre;shape-inside:url(#rect17274)" />
   </g>
 </svg>
