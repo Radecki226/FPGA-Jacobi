@@ -24,8 +24,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1"
-     inkscape:cx="340.5"
-     inkscape:cy="278.5"
+     inkscape:cx="355.5"
+     inkscape:cy="352.5"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
@@ -34,6 +34,26 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <rect
+       x="523.96612"
+       y="526.79455"
+       width="154.32606"
+       height="23.864854"
+       id="rect3869" />
+    <marker
+       style="overflow:visible;"
+       id="marker1267"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1015" />
+    </marker>
     <rect
        x="138.55982"
        y="69.000001"
@@ -238,6 +258,12 @@
        width="63.63961"
        height="28.991379"
        id="rect40546-0" />
+    <rect
+       x="523.96613"
+       y="526.79456"
+       width="131.69864"
+       height="21.036428"
+       id="rect3869-7" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -297,42 +323,42 @@
        id="rect846-0-54-8"
        width="33.060703"
        height="19.618895"
-       x="64.933388"
-       y="147.63943" />
+       x="171.19975"
+       y="139.03336" />
     <g
        id="g1493"
-       transform="matrix(0,-1,-1,0,189.44625,226.48713)"
+       transform="matrix(0,-0.66510902,-0.66519011,0,176.67528,176.67165)"
        style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
       <a
          id="a1488"
          style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
         <path
-           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 143.00005,85.072726 -2.96932,4.885606 19.98431,0.06615 -3.01257,-5.027761"
            id="path1209" />
       </a>
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 104.37353,83.48708 0.076,-14.00242"
+       style="fill:none;stroke:#000000;stroke-width:0.39909;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 120.08574,81.561029 0.0506,-9.313137"
        id="path1406"
        sodipodi:nodetypes="cc" />
     <g
        id="g1493-0"
-       transform="rotate(-90,149.51641,76.623635)"
+       transform="matrix(0,-0.66510902,0.6651882,0,84.184595,176.72143)"
        style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
       <a
          id="a1488-2"
          style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
         <path
-           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 143.00005,85.072726 -2.96932,4.885606 19.98431,0.06615 -3.01257,-5.027761"
            id="path1209-5" />
       </a>
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 157.96548,83.139994 -0.076,-14.00242"
+       style="fill:none;stroke:#000000;stroke-width:0.399089;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 140.77396,81.610813 -0.0506,-9.313136"
        id="path1406-7"
        sodipodi:nodetypes="cc" />
     <text
@@ -344,11 +370,11 @@
        y="0"><tspan
          x="180.58008"
          y="174.99679"
-         id="tspan1107">MAIN
+         id="tspan12438">MAIN
 </tspan><tspan
          x="156.11426"
          y="189.99679"
-         id="tspan1109">CONTROLLER</tspan></text>
+         id="tspan12440">CONTROLLER</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(0.26458333)"
@@ -372,11 +398,11 @@
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect19273)"><tspan
          x="283.81445"
          y="105.78585"
-         id="tspan1111">CORDIC
+         id="tspan12442">CORDIC
 </tspan><tspan
          x="283.81445"
          y="120.78585"
-         id="tspan1113">WRITER</tspan></text>
+         id="tspan12444">WRITER</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,50.742847,49.380201)"
@@ -384,7 +410,7 @@
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect19273-02)"><tspan
          x="283.81445"
          y="105.78585"
-         id="tspan1115">RAM</tspan></text>
+         id="tspan12446">RAM</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,74.31602,17.575127)"
@@ -394,11 +420,11 @@
        y="0"><tspan
          x="298.94238"
          y="105.78585"
-         id="tspan1117">CORDIC
+         id="tspan12448">CORDIC
 </tspan><tspan
          x="298.70801"
          y="120.78585"
-         id="tspan1119">READER</tspan></text>
+         id="tspan12450">READER</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,44.12877,17.777988)"
@@ -408,11 +434,11 @@
        y="0"><tspan
          x="292.08691"
          y="105.78585"
-         id="tspan1121">ROTATION
+         id="tspan12452">ROTATION
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan1123">CORDIC</tspan></text>
+         id="tspan12454">CORDIC</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,12.730419,77.045294)"
@@ -422,35 +448,27 @@
        y="0"><tspan
          x="287.16797"
          y="105.78585"
-         id="tspan1125">VECTORING
+         id="tspan12456">VECTORING
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan1127">CORDIC</tspan></text>
+         id="tspan12458">CORDIC</tspan></text>
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.262687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart)"
-       d="M 73.871918,85.592707 H 99.417183"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart)"
+       d="M 74.342035,79.639582 H 116.61509"
        id="path22307" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.251612px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 73.307297,88.772506 103.566833,-0.105852 -0.0267,-4.625273 -13.90976,-0.104789"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 73.360898,88.768636 82.451032,-0.173932 -0.0213,-7.600095 -11.07376,-0.172186"
        id="path22431" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.24073px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 99.370433,69.931278 -17.62798,0.02646 -0.0513,-19.165612 7.32503,-0.02646"
-       id="path23154" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.262081px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 110.37439,50.83287 8.61291,0.01679"
        id="path23269" />
     <path
-       style="fill:#000000;stroke:#ff0000;stroke-width:0.262081px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-5)"
+       style="fill:#000000;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-5);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 140.36095,50.919035 8.61291,0.01679"
        id="path23269-2" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.264624px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 170.30515,49.721804 h 7.49274 l 0.0659,19.532474 v 0 l -14.46054,-0.01961"
-       id="path23551" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.25864;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect23797"
@@ -486,11 +504,11 @@
        d="m 26.615718,87.83762 21.777329,0.02409"
        id="path27710" />
     <path
-       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.443354;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart-1);marker-end:url(#Arrow1Mend-9)"
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart-1);marker-end:url(#Arrow1Mend-9)"
        d="m 74.15575,106.71808 12.889242,0.032"
        id="path27710-2" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.25937;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
        d="m 71.007207,40.526758 v -14.39705 l 17.066547,-0.0057"
        id="path28270" />
     <path
@@ -506,45 +524,37 @@
        d="m 160.47344,31.386816 c 0,6.98372 0.012,9.116408 0.012,9.116408"
        id="path28385-3" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.261899px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 157.93914,76.052171 -10.80269,-0.04752"
-       id="path28561" />
-    <path
-       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.24694px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-8)"
-       d="m 113.62353,76.970719 -8.80996,-0.0518"
-       id="path28561-3" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.346561px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 155.84142,52.271599 c 0,6.114315 0,6.114315 0,6.114315 l -57.344213,0.0457 -0.0042,-6.155803"
        id="path29056" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,9.525,5.2916666)"
+       transform="matrix(0.26458333,0,0,0.26458333,115.79136,-3.3144121)"
        id="text37046"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect37048)"><tspan
          x="255"
          y="519.94796"
-         id="tspan1129">RAM:</tspan></text>
+         id="tspan12460">RAM:</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 64.955208,158.08854 H 98.028124"
+       d="m 171.22157,149.48246 h 33.07292"
        id="path37476" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,5.2384827,1.122532)"
+       transform="matrix(0.26458333,0,0,0.26458333,111.50485,-7.4835467)"
        id="text40544"
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan1131">W</tspan></text>
+         id="tspan12462">W</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,6.3642397,10.940398)"
+       transform="matrix(0.26458333,0,0,0.26458333,112.6306,2.3343193)"
        id="text40544-4"
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546-0)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan1133">V</tspan></text>
+         id="tspan12464">V</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,3.7417734,3.367596)"
@@ -552,6 +562,51 @@
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect44589)"><tspan
          x="138.56055"
          y="87.246606"
-         id="tspan1135">TOP</tspan></text>
+         id="tspan12466">TOP</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 170.38681,41.999208 h 7.14003 l -0.10729,-4.573052 0.0976,-17.431381 -120.540946,0.0057 0.02666,18.842662 v 0 0"
+       id="path1004" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1267)"
+       d="m 56.997017,38.106475 0.0241,1.836955"
+       id="path1421" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1267)"
+       d="m 170.49014,50.433652 7.01172,-0.0041 0.0163,23.590103 -32.85657,-2.33e-4"
+       id="path1696" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1267)"
+       d="m 116.62728,73.921374 -17.813859,0.008 -17.413419,0.03332 -0.05067,-24.128699 7.235873,-0.03332"
+       id="path1924"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.650093px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 117.56317,142.29191 20.46189,-0.02"
+       id="path2205" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.650093px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 117.41317,151.11332 20.46188,-0.02"
+       id="path2205-3" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,0.88867118,1.2174532)"
+       id="text3867"
+       style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect3869)"><tspan
+         x="523.9668"
+         y="537.74289"
+         id="tspan12468">CONTROL PATH</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,0.73834492,10.039251)"
+       id="text3867-9"
+       style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect3869-7)"><tspan
+         x="523.9668"
+         y="537.74289"
+         id="tspan12474"><tspan
+   style="font-size:12px"
+   id="tspan12470">DATA</tspan> <tspan
+   style="font-size:12px"
+   id="tspan12472">PATH</tspan></tspan></text>
   </g>
 </svg>
