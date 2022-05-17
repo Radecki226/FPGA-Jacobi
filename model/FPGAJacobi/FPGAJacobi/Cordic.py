@@ -1,5 +1,7 @@
 import numpy as np
 from fxpmath import Fxp
+import os
+from tqdm import tqdm
 
 
 class Cordic:
@@ -80,3 +82,66 @@ class Cordic:
         y.equal(booth(y))
 
         return(x,y,z)
+    
+class Cordic_TV_generator:
+    
+    def __init__(self,
+                 name : str,
+                 n_vectors : int,
+                 n_iter : int, 
+                 n_word : int,
+                 n_frac : int, 
+                 is_signed : bool,
+                 mode : str = "rotation"):
+        
+        self.name = name
+        self.n_vectors = n_vectors
+        self.cordic = Cordic(mode, n_iter, n_word, n_frac, is_signed)
+        self.n_word = n_word
+        self.n_frac = n_frac
+        self.is_signed = is_signed
+        self.mode = mode
+        
+    @staticmethod
+    def vector3_to_txt(x : Fxp, y : Fxp, z: Fxp) -> str:
+
+        vector_string = "{x} {y} {z}".format(x = x.hex(), y = y.hex(), z = z.hex())
+
+        return vector_string
+
+    def generate_files(self, input_vectors : list):
+        
+        try:
+            os.mkdir("..//TV//{name}".format(name=self.name))
+        except OSError as error:
+            print(error)
+            
+        with open("..//TV//{name}//input_vectors.txt".format(name=self.name), 'w') as f_in:
+            with open("..//TV//{name}//output_vectors.txt".format(name=self.name), 'w') as f_out:
+                    for i in tqdm(range(self.n_vectors)):
+                        v_in = input_vectors[i]
+                        v_out = self.cordic.run(*v_in)
+
+
+                        in_vector_string = self.vector3_to_txt(*v_in)
+                        f_in.write(in_vector_string)
+                        f_in.write("\n")
+
+                        out_vector_string = self.vector3_to_txt(*v_out)
+                        f_out.write(out_vector_string)
+                        f_out.write("\n")
+
+    
+    def run(self):
+        vectors = []
+        for i in range(self.n_vectors):        
+            x_in = Fxp(np.random.rand(),n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
+            y_in = Fxp(np.random.rand()*2-1,n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
+            
+            if self.mode == "vectoring":
+                z_in = Fxp(0,n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
+            else:
+                z_in = Fxp((np.random.rand()*2-1)*np.pi/2,n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
+            
+            vectors.append((x_in, y_in, z_in))
+        self.generate_files(vectors)
