@@ -1,6 +1,8 @@
 import numpy as np
 from fxpmath import Fxp
 from FPGAJacobi.Cordic import Cordic
+from tqdm import tqdm
+import os
 
 class Jacobi:
     def __init__(self, 
@@ -120,4 +122,83 @@ class Jacobi:
             print("Sweep {n}/{N}".format(n = i+1, N = self._n_sweeps), end = '\r')
             self.do_one_sweep()
         return self._A, self._V
+    
+    
+class Jacobi_TV_generator:
+    
+    def __init__(self,
+                 name : str,
+                 n_matrices : int, 
+                 n_iter : int, 
+                 n_word : int,
+                 n_frac : int, 
+                 is_signed : bool, 
+                 N : int, 
+                 n_sweeps : int):
+        
+        self.n_matrices = n_matrices
+        self.name = name
+        self.jacobi = Jacobi(n_iter, n_word, n_frac, is_signed, N, n_sweeps)
+        self.n_word = n_word
+        self.n_frac = n_frac
+        self.is_signed = is_signed
+        self.N = N
+        
+    @staticmethod
+    def symmetric_matrix_to_txt(A : Fxp) -> str:
+        N = A.shape[0]
+        matrix_string = ""
+
+        #generate upper triangle
+        for row in range(N):
+            for column in range(row,N):
+                matrix_string += "{val} ".format(val=A[row,column].hex())
+
+        return matrix_string
+    
+    @staticmethod
+    def nonsymmetric_matrix_to_txt(A : Fxp) -> str:
+        N = A.shape[0]
+        matrix_string = ""
+
+        #generate upper triangle
+        for row in range(N):
+            for column in range(N):
+                matrix_string += "{val} ".format(val=A[row,column].hex())
+
+        return matrix_string
+
+    def generate_files(self, input_matrices : list):
+        
+        try:
+            os.mkdir("..//TV//{name}".format(name=self.name))
+        except OSError as error:
+            print(error)
+            
+        with open("..//TV//{name}//input_matrix.txt".format(name=self.name), 'w') as f_in:
+            with open("..//TV//{name}//eigenvectors_matrix.txt".format(name=self.name), 'w') as f_v:
+                with open("..//TV//{name}//diagonal_matrix.txt".format(name=self.name), 'w') as f_w:
+                    for i in tqdm(range(self.n_matrices)):
+                        A = input_matrices[i]
+                        w,v = self.jacobi.run(A)
+
+                        in_matrix_string = self.symmetric_matrix_to_txt(A)
+                        f_in.write(in_matrix_string)
+                        f_in.write("\n")
+
+                        v_matrix_string = self.nonsymmetric_matrix_to_txt(v)
+                        f_v.write(v_matrix_string)
+                        f_v.write("\n")
+
+                        w_matrix_string = self.symmetric_matrix_to_txt(w)
+                        f_w.write(w_matrix_string)
+                        f_w.write("\n")
+    
+    def run(self):
+        matrices = []
+        for i in range(self.n_matrices):        
+            A = (np.random.rand(self.N,self.N)*2)-1
+            A = (A + A.T)/2
+            matrices.append(Fxp(A, n_word = self.n_frac+1, n_frac = self.n_frac, signed = self.is_signed))
+        self.generate_files(matrices)
             
