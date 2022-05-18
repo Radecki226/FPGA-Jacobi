@@ -16,4 +16,4 @@ czyli 28*120 = 40us
 
 Dla 12 byłoby:
 
-Generalnie można powiedzec ze to będzie n^2 + (15 + n + (n/2)*(15 + 2*n))*(n/2)*(n-1)
+Generalnie można powiedzec ze to będzie n^2 + 4*(15 + n + (n/2)*(15 + 2*n))*(n/2)*(n-1)

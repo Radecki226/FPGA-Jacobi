@@ -152,7 +152,7 @@ class Jacobi_TV_generator:
         #generate upper triangle
         for row in range(N):
             for column in range(row,N):
-                matrix_string += "{val} ".format(val=A[row,column].hex())
+                matrix_string += "{val}\n".format(val=A[row,column].hex())
 
         return matrix_string
     
@@ -164,7 +164,7 @@ class Jacobi_TV_generator:
         #generate upper triangle
         for row in range(N):
             for column in range(N):
-                matrix_string += "{val} ".format(val=A[row,column].hex())
+                matrix_string += "{val}\n".format(val=A[row,column].hex())
 
         return matrix_string
 
