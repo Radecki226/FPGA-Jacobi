@@ -47,7 +47,7 @@ class driver;
         
     end
 
-    jif.vld <= 0;
+    jif.in_vld <= 0;
     $fclose(fd);
     
   endtask
@@ -68,7 +68,7 @@ class monitor;
 
   function new(string name);
     $sformat(path_eigenvectors, "%s\\eigenvectors_matrix.txt",name);
-    $sformat(path_eigenvalues, "%s\\diagonal_matrix.txt", name)
+    $sformat(path_eigenvalues, "%s\\diagonal_matrix.txt", name);
   endfunction
   
   task run();
@@ -200,11 +200,11 @@ interface jacobi_if (input bit clk);
 
   logic 		              rst;
 
-  logic [`IN_WORD_WIDTH]  in_dat;
+  logic [`IN_WORD_WIDTH-1:0]  in_dat;
   logic                   in_vld;
   logic                   in_rdy;
 
-  logic [`OUT_WORD_WIDTH] out_dat;
+  logic [`OUT_WORD_WIDTH-1:0] out_dat;
   logic                   out_vld;
   logic                   out_rdy;
 
@@ -220,19 +220,20 @@ module tb;
 
   jacobi_if _if (clk);
 
-  jacobi_top u0 #(N = `N,
-                  IN_WORD_WIDTH = `IN_WORD_WIDTH, 
-                  OUT_WORD_WIDTH = `OUT_WORD_WIDTH)
-                 (.clk(clk),
-                  .rst(_if.rst),
-                 
-                  .in_dat_i(_if.in_dat),
-                  .in_vld_i(_if.in_vld),
-                  .in_rdy_o(_if.in_rdy),
+  jacobi_top #(.N(`N),
+               .IN_WORD_WIDTH(`IN_WORD_WIDTH), 
+               .OUT_WORD_WIDTH(`OUT_WORD_WIDTH)) u0
 
-                  .out_dat_o(_if.out_dat),
-                  .out_vld_o(_if.out_vld),
-                  .out_rdy_i(_if.out_rdy));
+              (.clk(clk),
+              .rst(_if.rst),
+
+              .in_dat_i(_if.in_dat),
+              .in_vld_i(_if.in_vld),
+              .in_rdy_o(_if.in_rdy),
+
+              .out_dat_o(_if.out_dat),
+              .out_vld_o(_if.out_vld),
+              .out_rdy_i(_if.out_rdy));
   test t0;
   
   initial begin
@@ -240,7 +241,7 @@ module tb;
     
     // Apply reset and start stimulus
     #20 _if.rst <= 0;
-    t0 = new;
+    t0 = new("C:\\Users\\piotrek\\Desktop\\nauka\\semestr_8\\sdup\\FPGA-Jacobi\\model\\TV\\class test\\");
     t0.jif = _if;
     t0.run();
     
@@ -250,8 +251,8 @@ module tb;
   end
   
   // System tasks to dump VCD waveform file
-  initial begin
+  /*initial begin
     $dumpvars;
     $dumpfile ("dump.vcd");
-  end
+  end*/
 endmodule
