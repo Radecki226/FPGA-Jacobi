@@ -14,6 +14,7 @@ class driver;
   int n_matrix = 0;
   int n_entry = 0;
 
+
   bit [`IN_WORD_WIDTH-1:0] in_dat;
 
   virtual jacobi_if jif;
@@ -28,13 +29,18 @@ class driver;
     $display ("T=%0t [Driver] starting ...", $time);
     @ (posedge jif.clk);
     fd = $fopen(path, "r");
-    
-    /*Iterate to the end of file*/
+    //Iterate to the end of file
     while ($fscanf(fd, "%h", in_dat) == 1) begin     
 
       jif.in_vld <= 1;
       jif.in_dat <= in_dat;
-      @ (posedge jif.clk && jif.in_rdy == 1);
+
+      while(1) begin
+        @ (posedge jif.clk);
+        if (jif.in_rdy == 1) begin
+          break;
+        end
+      end
       
       $display ("T=%0t [Driver] Driving item %0x n_entry = %0d, n_matrix = %0d", $time, in_dat, n_entry, n_matrix); 
 
@@ -241,13 +247,14 @@ module tb;
     
     // Apply reset and start stimulus
     #20 _if.rst <= 0;
-    t0 = new("C:\\Users\\piotrek\\Desktop\\nauka\\semestr_8\\sdup\\FPGA-Jacobi\\model\\TV\\class test\\");
+    t0 = new("C:\\Users\\piotrek\\Desktop\\nauka\\semestr_8\\sdup\\FPGA-Jacobi\\model\\TV\\class test");
+    
     t0.jif = _if;
     t0.run();
     
     // Because multiple components and clock are running
     // in the background, we need to call $finish explicitly
-    #50 $finish;
+    //#50 $finish;
   end
   
   // System tasks to dump VCD waveform file
