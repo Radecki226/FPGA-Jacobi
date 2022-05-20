@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 `define N 8
 `define IN_WORD_WIDTH 16
 `define OUT_WORD_WIDTH 20
@@ -42,7 +43,7 @@ class driver;
         end
       end
       
-      $display ("T=%0t [Driver] Driving item %0x n_entry = %0d, n_matrix = %0d", $time, in_dat, n_entry, n_matrix); 
+      $display ("T=%0t [Driver] Driving item 0x%0h n_entry = %0d, n_matrix = %0d", $time, in_dat, n_entry, n_matrix); 
 
       if (n_entry == (`N/2)*(`N+1) - 1) begin
         n_entry = 0;
@@ -120,6 +121,7 @@ class scoreboard;
   mailbox scb_mbx;
   int n_matrix = 0;
   int n_entry = 0;
+  int err_count = 0;
   string which = "eigenvalues";
   task run();
     forever begin
@@ -127,6 +129,7 @@ class scoreboard;
       scb_mbx.get(item);
       
       if (item.obtained_data != item.correct_data) begin
+        err_count++;
         $display ("T=%0t [Scoreboard] ERROR! Mismatch matrix = %0d %s entry = %0d correct = 0x%0h obtained = 0x%0h",
                   $time, n_matrix, which, n_entry, item.correct_data, item.obtained_data);
       end else begin
@@ -251,6 +254,9 @@ module tb;
     
     t0.jif = _if;
     t0.run();
+
+    #10000
+    $display("[TB] Err count = %0d", t0.e0.s0.err_count);
     
     // Because multiple components and clock are running
     // in the background, we need to call $finish explicitly

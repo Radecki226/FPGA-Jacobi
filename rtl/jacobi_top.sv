@@ -24,8 +24,8 @@ module jacobi_top #(
     out_vld_r                    <= in_vld_i;
   end
 
-    assign in_rdy_o = 1;
-    assign out_dat_o = out_dat_r;
-    assign out_vld_o = out_vld_r;
+  assign in_rdy_o = 1;
+  assign out_dat_o = out_dat_r;
+  assign out_vld_o = out_vld_r;
     
 endmodule
