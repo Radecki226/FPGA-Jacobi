@@ -63,20 +63,50 @@ class Cordic:
                     d = -1
 
             new_x = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
-            new_x.equal(x - d*(y >> i))
+            y_shift = y.copy()
+            y_shift.equal(y >> i)
 
             new_y = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
-            new_y.equal(y + d*(x >> i))
+            x_shift = x.copy()
+            x_shift.equal(x >> i)
 
             new_z = Fxp(signed=self._is_signed, n_word=self._n_word, n_frac=self._n_frac, rounding = "around")
-            new_z.equal(z - d*arctan[i])
+
+            if (d > 0):
+              new_x.equal(x - y_shift)
+              new_y.equal(y + x_shift)
+              new_z.equal(z - arctan[i])
+            else:
+              new_x.equal(x + y_shift)
+              new_y.equal(y - x_shift)
+              new_z.equal(z + arctan[i])
 
             x.equal(new_x)
             y.equal(new_y)
             z.equal(new_z)
         
         def booth(x_in):
-            x_out = (x_in >> 0) - (x_in >> 1) + (x_in >> 3) - (x_in >> 5) + (x_in >> 6) - (x_in >> 8) + (x_in >> 9) - (x_in >> 12) + (x_in >> 13) - (x_in >> 14)
+            x1 = x_in.copy()
+            x1.equal(x1 >> 1)
+            x3 = x_in.copy()
+            x3.equal(x3 >> 3)
+            x5 = x_in.copy()
+            x5.equal(x5 >> 5)
+            x6 = x_in.copy()
+            x6.equal(x6 >> 6)
+            x8 = x_in.copy()
+            x8.equal(x8 >> 8)
+            x9 = x_in.copy()
+            x9.equal(x9 >> 9)
+            x12 = x_in.copy()
+            x12.equal(x12 >> 12)
+            x13 = x_in.copy()
+            x13.equal(x13 >> 13)
+            x14 = x_in.copy()
+            x14.equal(x14 >> 14)
+            x_out = x_in.copy()
+            x_out.equal(x_in - x1 + x3 - x5 + x6 - x8 + x9 - x12 + x13 - x14)
+            fgfg = Fxp(8.3)
             return x_out
         x.equal(booth(x))
         y.equal(booth(y))

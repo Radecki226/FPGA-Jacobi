@@ -103,6 +103,13 @@ class monitor;
 endclass
 
 class scoreboard;
+  function abs(signed x,signed y);
+    if (x > y) begin
+      return x-y;
+    end else begin
+      return y-x;
+    end
+  endfunction
   mailbox scb_mbx;
   int n_entry = 0;
   int err_count = 0;
@@ -110,8 +117,8 @@ class scoreboard;
     forever begin
       cordic_item item;
       scb_mbx.get(item);
-      
-      if (item.x_correct != item.x_obtained || item.y_correct != item.y_obtained  || item.z_correct != item.z_obtained ) begin
+
+      if (abs(item.x_obtained,item.x_correct) > 1 || abs(item.y_obtained, item.y_correct) > 1 || abs(item.z_obtained, item.z_correct) > 1) begin
         err_count++;
         $display ("T=%0t [Scoreboard] ERROR! Mismatch entry = %0d\ncorrect:  x = 0x%0h y = 0x%0h z = 0x%0h\nobtained: x = 0x%0h y = 0x%0h z = 0x%0h" ,
                   $time, n_entry, item.x_correct, item.y_correct, item.z_correct, item.x_obtained, item.y_obtained, item.z_obtained);
@@ -199,7 +206,7 @@ module tb;
 
   cordic_if _if (clk);
 
-`define MODE "rotation"
+`define MODE "vectoring"
   cordic #(
     .MODE(`MODE)
   ) u0 (
@@ -223,7 +230,7 @@ module tb;
     
     // Apply reset and start stimulus
     #20 _if.rst <= 0;
-    t0 = new("C:\\Users\\piotrek\\Desktop\\nauka\\semestr_8\\sdup\\FPGA-Jacobi\\model\\TV\\cordic_rotation_test");
+    t0 = new("C:\\Users\\piotrek\\Desktop\\nauka\\semestr_8\\sdup\\FPGA-Jacobi\\model\\TV\\cordic_vectoring_test");
     
     t0.cif = _if;
     t0.run();
