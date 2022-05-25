@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.0000001"
-     inkscape:cx="431.24999"
-     inkscape:cy="344.74999"
+     inkscape:zoom="1.0000001"
+     inkscape:cx="160.49999"
+     inkscape:cy="326.49998"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
@@ -290,6 +290,62 @@
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path22522-6" />
     </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mstart-1-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22519-1-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-9-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22522-8-2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22522-03" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-5-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22522-1-6" />
+    </marker>
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -304,18 +360,11 @@
        y="40.590122" />
     <rect
        style="fill:#aaeeff;stroke:#000000;stroke-width:0.3;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect846-0"
-       width="20.928587"
-       height="11.327297"
-       x="89.379967"
-       y="40.967468" />
-    <rect
-       style="fill:#aaeeff;stroke:#000000;stroke-width:0.3;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect846-0-5"
        width="20.928587"
        height="11.327297"
-       x="119.37997"
-       y="40.967468" />
+       x="87.497673"
+       y="42.819553" />
     <rect
        style="fill:#aaeeff;stroke:#000000;stroke-width:0.3;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect846-0-5-6"
@@ -324,54 +373,19 @@
        x="87.948814"
        y="101.28648" />
     <rect
-       style="fill:#aaeeff;stroke:#000000;stroke-width:0.3;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect846-0-8"
-       width="20.928587"
-       height="11.327297"
-       x="149.37997"
-       y="40.967468" />
-    <rect
        style="fill:#e9ddaf;stroke:#000000;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect846-0-54"
        width="33.060703"
        height="19.618895"
-       x="114.51237"
-       y="71.273506" />
+       x="88.69413"
+       y="74.454018" />
     <rect
        style="fill:#e9ddaf;stroke:#000000;stroke-width:0.305898;stroke-linejoin:round"
        id="rect846-0-54-8"
        width="33.060703"
        height="19.618895"
-       x="171.19975"
-       y="139.03336" />
-    <g
-       id="g1493-0"
-       transform="matrix(0.66510902,0,0,0.6651882,31.408967,29.00584)"
-       style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
-      <a
-         id="a1488-2"
-         style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
-        <path
-           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 160.01504,90.024482 -19.98431,-0.06615 2.96932,-4.885574 14.00242,-0.07604 z"
-           id="path1209-5"
-           sodipodi:nodetypes="ccccc" />
-      </a>
-    </g>
-    <g
-       id="g1493-0-3"
-       transform="matrix(-0.66510902,0,0,-0.6651882,231.1478,121.38)"
-       style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
-      <a
-         id="a1488-2-4"
-         style="stroke-width:0.6;stroke-miterlimit:4;stroke-dasharray:none">
-        <path
-           style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 160.01504,90.024482 -19.98431,-0.06615 2.96932,-4.885574 14.00242,-0.07604 z"
-           id="path1209-5-4"
-           sodipodi:nodetypes="ccccc" />
-      </a>
-    </g>
+       x="126.74976"
+       y="142.73752" />
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,9.7038274,15.594367)"
@@ -381,11 +395,11 @@
        y="0"><tspan
          x="180.58008"
          y="174.99679"
-         id="tspan11671">MAIN
+         id="tspan2646">MAIN
 </tspan><tspan
          x="156.11426"
          y="189.99679"
-         id="tspan11673">CONTROLLER</tspan></text>
+         id="tspan2648">CONTROLLER</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(0.26458333)"
@@ -393,57 +407,31 @@
        style="line-height:1.25;font-family:sans-serif;font-size:5.33333333px;white-space:pre;shape-inside:url(#rect14959)" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,17.594791,17.4625)"
-       id="text19271"
-       style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect19273)"><tspan
-         x="283.81445"
-         y="105.78585"
-         id="tspan11675">CORDIC
-</tspan><tspan
-         x="283.81445"
-         y="120.78585"
-         id="tspan11677">WRITER</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,45.562081,49.296147)"
+       transform="matrix(0.26458333,0,0,0.26458333,19.743846,52.476654)"
        id="text19271-51"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect19273-02)"
        x="33.984375"
        y="0"><tspan
          x="288.79395"
          y="105.78585"
-         id="tspan11679">DUAL PORT </tspan><tspan
+         id="tspan2650">DUAL PORT </tspan><tspan
          x="310.03418"
          y="120.78585"
-         id="tspan11681">RAM</tspan></text>
+         id="tspan2652">RAM</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,74.31602,17.575127)"
-       id="text19271-5"
-       style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect19273-0)"
-       x="24.046875"
-       y="0"><tspan
-         x="298.94238"
-         y="105.78585"
-         id="tspan11683">CORDIC
-</tspan><tspan
-         x="298.70801"
-         y="120.78585"
-         id="tspan11685">READER</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,44.12877,17.777988)"
+       transform="matrix(0.26458333,0,0,0.26458333,12.24648,19.630071)"
        id="text19271-3"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect19273-5)"
        x="30.366211"
        y="0"><tspan
          x="292.08691"
          y="105.78585"
-         id="tspan11687">ROTATION
+         id="tspan2654">ROTATION
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan11689">CORDIC</tspan></text>
+         id="tspan2656">CORDIC</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,12.730419,77.045294)"
@@ -453,26 +441,26 @@
        y="0"><tspan
          x="287.16797"
          y="105.78585"
-         id="tspan11691">VECTORING
+         id="tspan2658">VECTORING
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan11693">CORDIC</tspan></text>
+         id="tspan2660">CORDIC</tspan></text>
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 110.37439,50.83287 8.61291,0.01679"
-       id="path23269" />
+       style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-1)"
+       d="m 73.266469,48.67231 13.324636,0.01356"
+       id="path23269-6" />
     <path
-       style="fill:#000000;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend-5);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 140.36095,50.919035 8.61291,0.01679"
+       style="fill:#000000;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-5)"
+       d="m 108.5448,48.802368 8.61291,0.01679"
        id="path23269-2" />
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.25864;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:0.224347;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect23797"
-       width="167.59772"
-       height="111.38958"
-       x="36.660618"
-       y="18.25625" />
+       width="123.71118"
+       height="113.54053"
+       x="36.643471"
+       y="18.239105" />
     <rect
        style="fill:#ccffaa;stroke:#000000;stroke-width:0.265999;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect23901"
@@ -505,37 +493,37 @@
        d="m 74.15575,106.71808 12.889242,0.032"
        id="path27710-2" />
     <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 158.31233,40.972976 c 0,-4.102668 0,-4.102668 0,-4.102668 l -57.52004,-0.03066 -0.004,4.130506"
-       id="path29056" />
+       style="fill:#ff0000;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart-1-0);marker-end:url(#Arrow1Mend-9-0)"
+       d="m 74.37768,84.548074 12.889242,0.032"
+       id="path27710-2-1" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,115.79136,-3.3144121)"
+       transform="matrix(0.26458333,0,0,0.26458333,71.341362,0.38975438)"
        id="text37046"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect37048)"><tspan
          x="255"
          y="519.94796"
-         id="tspan11695">RAM:</tspan></text>
+         id="tspan2662">RAM:</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 171.22157,149.48246 h 33.07292"
+       d="m 126.77157,153.18663 h 33.07292"
        id="path37476" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,111.50485,-7.4835467)"
+       transform="matrix(0.26458333,0,0,0.26458333,67.054852,-3.7793802)"
        id="text40544"
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan11697">W</tspan></text>
+         id="tspan2664">W</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,112.6306,2.3343193)"
+       transform="matrix(0.26458333,0,0,0.26458333,68.180602,6.0384858)"
        id="text40544-4"
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546-0)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan11699">V</tspan></text>
+         id="tspan2666">V</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,3.7417734,3.367596)"
@@ -543,84 +531,53 @@
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect44589)"><tspan
          x="138.56055"
          y="87.246606"
-         id="tspan11701">TOP</tspan></text>
+         id="tspan2668">TOP</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.650093px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 117.56317,142.29191 20.46189,-0.02"
+       d="m 73.113172,145.99608 20.46189,-0.02"
        id="path2205" />
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.650093px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 117.41317,151.11332 20.46188,-0.02"
+       d="m 72.963172,154.81749 20.46188,-0.02"
        id="path2205-3" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,0.88867118,1.2174532)"
+       transform="matrix(0.26458333,0,0,0.26458333,-43.561327,4.9216197)"
        id="text3867"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect3869)"><tspan
          x="523.9668"
          y="537.74289"
-         id="tspan11703">CONTROL PATH</tspan></text>
+         id="tspan2670">CONTROL PATH</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,0.73834492,10.039251)"
+       transform="matrix(0.26458333,0,0,0.26458333,-43.711653,13.743417)"
        id="text3867-9"
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect3869-7)"><tspan
          x="523.9668"
          y="537.74289"
-         id="tspan11709"><tspan
+         id="tspan2676"><tspan
    style="font-size:12px"
-   id="tspan11705">DATA</tspan> <tspan
+   id="tspan2672">DATA</tspan> <tspan
    style="font-size:12px"
-   id="tspan11707">PATH</tspan></tspan></text>
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart);marker-end:url(#marker1267)"
-       d="m 73.707705,95.333039 53.967225,0.01866 0.0372,-5.763136"
-       id="path4025" />
+   id="tspan2674">PATH</tspan></tspan></text>
     <rect
        style="fill:#e9ddaf;fill-opacity:1;stroke:#000000;stroke-width:0.264999;stroke-linejoin:round"
        id="rect4458"
        width="5.8208332"
        height="2.6458333"
-       x="140.30855"
-       y="49.648933" />
+       x="118.34813"
+       y="47.399975" />
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,-11.18673,-13.025216)"
+       transform="matrix(0.26458333,0,0,0.26458333,-33.147145,-15.274174)"
        id="text5868"
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect5870)"><tspan
          x="577"
          y="243.86576"
-         id="tspan11711">FIFO</tspan></text>
-    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.522494;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect1818"
-       width="97.608757"
-       height="40.458759"
-       x="82.164368"
-       y="27.395622" />
+         id="tspan2678">FIFO</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Mstart);marker-end:url(#marker1267);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 73.945508,50.006036 7.666221,0.0087"
-       id="path1955" />
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,3.0427086,3.3072915)"
-       id="text6721"
-       style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect6723)"><tspan
-         x="310.5"
-         y="114.44796"
-         id="tspan11713">ROTATION CONTROLLER</tspan></text>
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1267);marker-start:url(#Arrow1Mstart);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 134.30627,89.381609 0.0175,5.963449 16.34687,-0.03508 0.0234,-25.110805 -19.28768,-0.134472 v -4.513514"
-       id="path11305" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1267);stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 127.99808,61.427207 -1.4e-4,-3.246291 -28.534701,0.02783 -0.01967,-5.385747"
-       id="path11438" />
-    <path
-       style="fill:none;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart)"
-       d="m 134.41663,60.973839 -0.0145,-3.345736 25.61665,-0.07744 -0.0146,-5.266434"
-       id="path11440" />
+       style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1267);stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 124.28801,48.749476 7.71426,-0.0083 v 11.25306 H 74.058525"
+       id="path2431" />
   </g>
 </svg>
