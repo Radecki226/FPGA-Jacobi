@@ -1,11 +1,8 @@
 `timescale 1ns/1ps
-`define N 8
-`define IN_WORD_WIDTH 16
-`define OUT_WORD_WIDTH 20
-
+import common::*;
 class jacobi_item;
-  bit [`OUT_WORD_WIDTH-1:0] correct_data;
-  bit [`OUT_WORD_WIDTH-1:0] obtained_data;
+  bit [JACOBI_OUTPUT_WORD_WIDTH-1:0] correct_data;
+  bit [JACOBI_OUTPUT_WORD_WIDTH-1:0] obtained_data;
   
 endclass
 
@@ -16,7 +13,7 @@ class driver;
   int n_entry = 0;
 
 
-  bit [`IN_WORD_WIDTH-1:0] in_dat;
+  bit [JACOBI_INPUT_WORD_WIDTH-1:0] in_dat;
 
   virtual jacobi_if jif;
 
@@ -45,7 +42,7 @@ class driver;
       
       $display ("T=%0t [Driver] Driving item 0x%0h n_entry = %0d, n_matrix = %0d", $time, in_dat, n_entry, n_matrix); 
 
-      if (n_entry == (`N/2)*(`N+1) - 1) begin
+      if (n_entry == (JACOBI_N/2)*(JACOBI_N+1) - 1) begin
         n_entry = 0;
         n_matrix ++;
       end else begin
@@ -66,7 +63,7 @@ endclass
 class monitor;
   virtual jacobi_if jif;
   mailbox scb_mbx;
-  bit [`OUT_WORD_WIDTH-1:0] out_dat;
+  bit [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat;
 
   string path_eigenvectors, path_eigenvalues;
 
@@ -94,11 +91,11 @@ class monitor;
         jacobi_item item = new;
 
         /*Eigenvalues go first then eigenvectors we have to choose with which matrix we are comparing output data*/
-        if (n_iter > (`N/2)*(`N+1) - 1) begin
+        if (n_iter > (JACOBI_N/2)*(JACOBI_N+1) - 1) begin
           
           $fscanf(fd_w, "%h", item.correct_data);
           
-          if (n_iter == (`N/2)*(`N+1) + `N*`N - 1) begin
+          if (n_iter == (JACOBI_N/2)*(JACOBI_N+1) + JACOBI_N*JACOBI_N - 1) begin
             n_iter = 0;
           end else
             n_iter ++;
@@ -138,14 +135,14 @@ class scoreboard;
 
       /*Count iterations to print correct entry/matrix*/
       if (which == "eigenvalues") begin
-        if (n_entry == (`N/2)*(`N+1) - 1) begin
+        if (n_entry == (JACOBI_N/2)*(JACOBI_N+1) - 1) begin
           n_entry = 0;
           which = "eigenvectors";
         end else begin
           n_entry++;
         end
       end else begin
-        if (n_entry == `N*`N - 1) begin
+        if (n_entry == JACOBI_N*JACOBI_N - 1) begin
           n_entry = 0;
           which = "eigenvalues";
           n_matrix++;
@@ -209,11 +206,11 @@ interface jacobi_if (input bit clk);
 
   logic 		              rst;
 
-  logic [`IN_WORD_WIDTH-1:0]  in_dat;
+  logic [JACOBI_INPUT_WORD_WIDTH-1:0]  in_dat;
   logic                   in_vld;
   logic                   in_rdy;
 
-  logic [`OUT_WORD_WIDTH-1:0] out_dat;
+  logic [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat;
   logic                   out_vld;
   logic                   out_rdy;
 
@@ -229,9 +226,9 @@ module tb;
 
   jacobi_if _if (clk);
 
-  jacobi_top #(.N(`N),
-               .IN_WORD_WIDTH(`IN_WORD_WIDTH), 
-               .OUT_WORD_WIDTH(`OUT_WORD_WIDTH)) u0
+  jacobi_top #(.N(JACOBI_N),
+               .IN_WORD_WIDTH(JACOBI_INPUT_WORD_WIDTH), 
+               .OUT_WORD_WIDTH(JACOBI_OUTPUT_WORD_WIDTH)) u0
 
               (.clk(clk),
               .rst(_if.rst),

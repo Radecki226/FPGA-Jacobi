@@ -1,14 +1,14 @@
 `timescale 1ns/1ps
-`define WIDTH 20
+import common::*;
 
 class cordic_item;
-  bit [`WIDTH-1:0] x_correct;
-  bit [`WIDTH-1:0] y_correct;
-  bit [`WIDTH-1:0] z_correct;
+  bit [CORDIC_WORD_WIDTH-1:0] x_correct;
+  bit [CORDIC_WORD_WIDTH-1:0] y_correct;
+  bit [CORDIC_WORD_WIDTH-1:0] z_correct;
 
-  bit [`WIDTH-1:0] x_obtained;
-  bit [`WIDTH-1:0] y_obtained;
-  bit [`WIDTH-1:0] z_obtained;
+  bit [CORDIC_WORD_WIDTH-1:0] x_obtained;
+  bit [CORDIC_WORD_WIDTH-1:0] y_obtained;
+  bit [CORDIC_WORD_WIDTH-1:0] z_obtained;
   
 endclass
 
@@ -17,9 +17,9 @@ class driver;
   int fd;
   int n_entry = 0;
 
-  bit [`WIDTH-1:0] x_i;
-  bit [`WIDTH-1:0] y_i;
-  bit [`WIDTH-1:0] z_i;
+  bit [CORDIC_WORD_WIDTH-1:0] x_i;
+  bit [CORDIC_WORD_WIDTH-1:0] y_i;
+  bit [CORDIC_WORD_WIDTH-1:0] z_i;
 
 
   virtual cordic_if cif;
@@ -62,9 +62,9 @@ endclass
 class monitor;
   virtual cordic_if cif;
   mailbox scb_mbx;
-  bit [`WIDTH-1:0] x_o;
-  bit [`WIDTH-1:0] y_o;
-  bit [`WIDTH-1:0] z_o;
+  bit [CORDIC_WORD_WIDTH-1:0] x_o;
+  bit [CORDIC_WORD_WIDTH-1:0] y_o;
+  bit [CORDIC_WORD_WIDTH-1:0] z_o;
 
   string path;
 
@@ -184,14 +184,14 @@ interface cordic_if (input bit clk);
 
   logic 		          rst;
 
-  logic [`WIDTH-1:0]  x_i;
-  logic [`WIDTH-1:0]  y_i;
-  logic [`WIDTH-1:0]  z_i;
+  logic [CORDIC_WORD_WIDTH-1:0]  x_i;
+  logic [CORDIC_WORD_WIDTH-1:0]  y_i;
+  logic [CORDIC_WORD_WIDTH-1:0]  z_i;
   logic               vld_i;
 
-  logic [`WIDTH-1:0]  x_o;
-  logic [`WIDTH-1:0]  y_o;
-  logic [`WIDTH-1:0]  z_o;
+  logic [CORDIC_WORD_WIDTH-1:0]  x_o;
+  logic [CORDIC_WORD_WIDTH-1:0]  y_o;
+  logic [CORDIC_WORD_WIDTH-1:0]  z_o;
   logic               vld_o;
 
 endinterface

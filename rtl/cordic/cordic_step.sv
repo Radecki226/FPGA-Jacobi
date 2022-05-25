@@ -12,19 +12,19 @@ module cordic_step #(
   input signed [WORD_WIDTH-1:0] y_i,
   input signed [WORD_WIDTH-1:0] z_i,
   input signed [WORD_WIDTH-1:0] atan_i,
-  input                   vld_i,
+  input                         vld_i,
 
   output signed [WORD_WIDTH-1:0] x_o,
   output signed [WORD_WIDTH-1:0] y_o,
   output signed [WORD_WIDTH-1:0] z_o,
-  output                   vld_o
+  output                         vld_o
 
 );
   
   reg [WORD_WIDTH-1:0] x_r;
   reg [WORD_WIDTH-1:0] y_r;
   reg [WORD_WIDTH-1:0] z_r;
-  reg                   vld_r;
+  reg                  vld_r;
 
 generate
   if (MODE == "rotation") begin
