@@ -57,3 +57,46 @@ module jacobi_main_controller #(
 );
 
 endmodule
+
+  typedef enum {INIT, IDLE, RECEIVE_DATA, CALC_ANGLES, CALC_VALUES, DRAW_ROUND, SEND_DATA} main_fsm_t;
+  main_fsm_t main_fsm_r;
+  reg in_rdy;
+
+  // Main fsm reg part
+  always_ff @(posedge clk) begin
+    
+    case(main_fsm_r)
+      INIT: begin
+
+      end
+      IDLE:
+      RECEIVE_DATA:
+      CALC_ANGLES:
+      CALC_VALUES:
+      DRAW_ROUND:
+      SEND_DATA:
+    endcase
+  end
+
+  always_comb begin : main_fsm_comb
+
+    if (main_fsm_r == IDLE) begin
+      in_rdy <= 1;
+    else
+      in_rdy <= 0;
+    end
+
+  end
+  
+  //counter dummy
+  always_ff @(posedge clk) begin
+    if (counter_en) begin
+      d_r <= c
+      counter_r <= counter_r +1;
+    end
+  end
+
+  assign in_rdy_o = in_rdy;
+
+
+

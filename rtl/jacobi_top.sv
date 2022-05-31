@@ -20,7 +20,7 @@ module jacobi_top #(
 );
   
 
-  jacobi_main_controller #(N, IN_WORD_WIDTH, OUT_WORD_WIDTH, MEM_ADDR_WIDTHs) main_controller (
+  jacobi_main_controller #(N, IN_WORD_WIDTH, OUT_WORD_WIDTH, MEM_ADDR_WIDTH) main_controller (
     .clk(clk),
     .rst(rst),
     
