@@ -61,15 +61,16 @@ module jacobi_main_controller (
   reg                            in_rdy;
 
   // Input to memory signals
-  reg signed   [JACOBI_OUTPUT_WORD_WIDTH-1:0] in_dat_ram_din_a_r;
-  reg unsigned [JACOBI_ADDR_WIDTH-1:0]        in_dat_ram_addr_a_r;
-  reg                                         in_dat_ram_en_a_r;
-  reg                                         in_dat_ram_we_a_r;
+  reg signed   [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_a_r;
+  reg unsigned [JACOBI_ADDR_WIDTH-1:0]        ram_addr_a_r;
+  reg                                         ram_en_a_r;
+  reg                                         ram_we_a_r;
 
-  reg signed   [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_a;
-  reg unsigned [JACOBI_ADDR_WIDTH-1:0]        ram_addr_a;
-  reg                                         ram_en_a;
-  reg                                         ram_we_a;
+  reg signed   [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_b_r;
+  reg unsigned [JACOBI_ADDR_WIDTH-1:0]        ram_addr_b_r;
+  reg                                         ram_en_b_r;
+  reg                                         ram_we_b_r;
+
 
   // Input data counter
   reg unsigned [JACOBI_LOG2_N_INPUT_DATA-1:0] in_dat_counter_r;
@@ -104,18 +105,33 @@ module jacobi_main_controller (
         main_fsm_r <= IDLE;
       end
       IDLE: begin
-        if (in_vld_i == 1) begin
+        if (in_vld_i == 1 && in_rdy == 1) begin
+          ram_din_a_r <= in_dat_i;
+          ram_addr_a_r <= in_dat_counter_r;
+          ram_en_a_r <= 1;
+          ram_we_a_r <= 1;
           main_fsm_r <= RECEIVE_DATA;
         end
       end
 
       RECEIVE_DATA: begin
-        if (in_vld_i == 1 && in_rdy == 1 && in_dat_counter_r == JACOBI_N_INPUT_DATA-1) begin
-          main_fsm_r <= FINISH_RECEIVING;
+        if (in_vld_i == 1 && in_rdy == 1) begin
+          ram_din_a_r <= in_dat_i;
+          ram_addr_a_r <= in_dat_counter_r;
+          ram_en_a_r <= 1;
+          ram_we_a_r <= 1;
+          if (in_dat_counter_r == JACOBI_N_INPUT_DATA-1) begin
+            main_fsm_r <= FINISH_RECEIVING;
+          end
+        end else begin
+          ram_en_a_r <= 0;
+          ram_we_a_r <= 0;
         end
       end
 
       FINISH_RECEIVING: begin
+        ram_en_a_r <= 0;
+        ram_we_a_r <= 0;
         main_fsm_r <= CALC_ANGLES;
       end
   
@@ -135,6 +151,8 @@ module jacobi_main_controller (
 
     if (rst == 1) begin
       main_fsm_r <= INIT;
+      ram_en_a_r <= 0;
+      ram_we_a_r <= 0;
     end
 
   end
@@ -147,39 +165,9 @@ module jacobi_main_controller (
       in_rdy <= 0;
     end
 
-    if (main_fsm_r == IDLE || main_fsm_r == RECEIVE_DATA || main_fsm_r == FINISH_RECEIVING) begin
-      ram_en_a   <= in_dat_ram_en_a_r;
-      ram_we_a   <= in_dat_ram_we_a_r;
-      ram_addr_a <= in_dat_ram_addr_a_r;
-      ram_din_a  <= in_dat_ram_din_a_r;
-    end else begin
-      ram_en_a   <= 0;
-      ram_we_a   <= 0;
-      ram_addr_a <= 0;
-      ram_din_a  <= 0;
-    end
-
 
   end
 
-
-  /******** Receive data from uc ********/
-  always_ff @(posedge clk) begin : receive_from_uc_p
-    if (in_vld_i == 1 && in_rdy == 1) begin
-      in_dat_ram_din_a_r <= in_dat_i;
-      in_dat_ram_addr_a_r <= in_dat_counter_r;
-      in_dat_ram_en_a_r <= 1;
-      in_dat_ram_we_a_r <= 1;
-    end else begin
-      in_dat_ram_en_a_r <= 0;
-      in_dat_ram_we_a_r <= 0;
-    end
-
-    if (rst == 1) begin
-      in_dat_ram_en_a_r <= 0;
-      in_dat_ram_we_a_r <= 0;
-    end
-  end
 
   /******** Input data counter ********/
   always_ff @(posedge clk) begin : in_dat_counter_p
@@ -199,10 +187,10 @@ module jacobi_main_controller (
 
   assign in_rdy_o = in_rdy;
 
-  assign ram_din_a_o = ram_din_a;
-  assign ram_addr_a_o = ram_addr_a;
-  assign ram_en_a_o = ram_en_a;
-  assign ram_we_a_o = ram_we_a;
+  assign ram_din_a_o = ram_din_a_r;
+  assign ram_addr_a_o = ram_addr_a_r;
+  assign ram_en_a_o = ram_en_a_r;
+  assign ram_we_a_o = ram_we_a_r;
 
 endmodule
 
