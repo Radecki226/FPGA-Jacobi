@@ -1,26 +1,62 @@
 import common::*;
-module jacobi_top #(
-  parameter N = JACOBI_N,
-  parameter IN_WORD_WIDTH = JACOBI_INPUT_WORD_WIDTH,
-  parameter OUT_WORD_WIDTH = JACOBI_OUTPUT_WORD_WIDTH,
-  parameter MEM_SIZE = JACOBI_MEM_SIZE,
-  parameter MEM_ADDR_WIDTH = JACOBI_ADDR_WIDTH
-)
-(
+module jacobi_top (
   input                       clk,
   input                       rst, 
 
-  input [IN_WORD_WIDTH-1:0]   in_dat_i,
+  input [JACOBI_INPUT_WORD_WIDTH-1:0]   in_dat_i,
   input                       in_vld_i,
   output                      in_rdy_o,
 
-  output [OUT_WORD_WIDTH-1:0] out_dat_o,
+  output [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
   output                      out_vld_o,
   input                       out_rdy_i
 );
-  
 
-  jacobi_main_controller #(N, IN_WORD_WIDTH, OUT_WORD_WIDTH, MEM_ADDR_WIDTH) main_controller (
+  /*********************
+   * Signal declarations
+  **********************/
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_x;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_y;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_z;
+  wire                                vectoring_in_vld;
+
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_x;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_y;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_z;
+  wire                                vectoring_out_vld;
+
+  wire                                ram_en_a;
+  wire                                ram_we_a;
+  wire [JACOBI_ADDR_WIDTH-1:0]        ram_addr_a;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_a;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_a;
+
+  wire                                ram_en_b;
+  wire                                ram_we_b;
+  wire [JACOBI_ADDR_WIDTH-1:0]        ram_addr_b;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_b;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_b;
+
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_x;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_y;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_z;
+  wire                                rotation_in_vld;
+
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_out_dat_x;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_out_dat_y;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_out_dat_z;
+  wire                                rotation_out_vld;
+
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_x;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_y;
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_z;
+  wire                                rotation_fifo_out_vld;
+
+  
+  /***************
+   * Instantations
+  ***************/
+  jacobi_main_controller main_controller (
     .clk(clk),
     .rst(rst),
     
@@ -40,7 +76,7 @@ module jacobi_top #(
     .vectoring_out_dat_x_i(vectoring_out_dat_x),
     .vectoring_out_dat_y_i(vectoring_out_dat_y),
     .vectoring_out_dat_z_i(vectoring_out_dat_z),
-    .vectoring_out_vld_o(vectoring_out_vld),
+    .vectoring_out_vld_i(vectoring_out_vld),
 
     .ram_en_a_o(ram_en_a),
     .ram_we_a_o(ram_we_a),
@@ -62,7 +98,7 @@ module jacobi_top #(
     .rotation_fifo_out_dat_x_i(rotation_fifo_out_dat_x),
     .rotation_fifo_out_dat_y_i(rotation_fifo_out_dat_y),
     .rotation_fifo_out_dat_z_i(rotation_fifo_out_dat_z),
-    .rotation_fifo_out_vld_o(rotation_fifo_out_dat)
+    .rotation_fifo_out_vld_i(rotation_fifo_out_vld)
   );
 
   cordic #(.MODE("vectoring")) vectoring_cordic (
@@ -80,7 +116,7 @@ module jacobi_top #(
     .vld_o(vectoring_out_vld)
   );
 
-  dual_port_ram #(MEM_ADDR_WIDTH, MEM_SIZE, OUT_WORD_WIDTH) bram0 (
+  dual_port_ram #(JACOBI_ADDR_WIDTH, JACOBI_MEM_SIZE, JACOBI_OUTPUT_WORD_WIDTH) bram0 (
     .clk_a(clk),
     .en_a(ram_en_a),
     .we_a(ram_we_a),
@@ -125,18 +161,12 @@ module jacobi_top #(
     rotation_fifo_out_dat_z
   )
   */
-  
-  //dummy shit
-  reg [OUT_WORD_WIDTH-1:0] out_dat_r;
-  reg                  out_vld_r = 0;
-  
-  always_ff @ (posedge clk) begin
-    out_dat_r[IN_WORD_WIDTH-1:0] <= in_dat_i;
-    out_vld_r                    <= in_vld_i;
-  end
 
-  assign in_rdy_o = 1;
-  assign out_dat_o = out_dat_r;
-  assign out_vld_o = out_vld_r;
+  //Temporary
+  assign rotation_fifo_out_dat_x = rotation_out_dat_x;
+  assign rotation_fifo_out_dat_y = rotation_out_dat_y;
+  assign rotation_fifo_out_dat_z = rotation_out_dat_z;
+  assign rotation_fifo_out_vld   = rotation_out_vld;
+
     
 endmodule

@@ -222,15 +222,12 @@ module tb;
 
   reg clk;
   
-  always #10 clk =~ clk;
+  always #5 clk =~ clk;
 
   jacobi_if _if (clk);
 
-  jacobi_top #(.N(JACOBI_N),
-               .IN_WORD_WIDTH(JACOBI_INPUT_WORD_WIDTH), 
-               .OUT_WORD_WIDTH(JACOBI_OUTPUT_WORD_WIDTH)) u0
-
-              (.clk(clk),
+  jacobi_top u0(
+              .clk(clk),
               .rst(_if.rst),
 
               .in_dat_i(_if.in_dat),
