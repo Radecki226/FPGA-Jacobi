@@ -11,6 +11,11 @@ package common;
   parameter JACOBI_MEM_SIZE           = 100;
   parameter JACOBI_ADDR_WIDTH         = 7;
   parameter JACOBI_LOG2_N             = 3;
+  parameter JACOBI_V_OFFSET           = 36;
+  parameter JACOBI_N_PAIRS            = 4;
+  parameter JACOBI_LOG2_N_PAIRS       = 2;
+  parameter JACOBI_PAIR               = 2;
+  parameter JACOBI_LOG2_PAIR          = 1;
   
   function [FXP_MAX_WIDTH-1:0] fxp_round;
     input signed [FXP_MAX_WIDTH-1:0] in_dat;
