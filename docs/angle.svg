@@ -23,13 +23,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="211.24815"
-     inkscape:cy="68.059028"
+     inkscape:zoom="11.313708"
+     inkscape:cx="303.48139"
+     inkscape:cy="38.493126"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:window-y="1341"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
@@ -305,11 +305,11 @@
        y="0"><tspan
          x="200.28582"
          y="50.045446"
-         id="tspan42587">VECTORING
+         id="tspan4475">VECTORING
 </tspan><tspan
          x="205.51889"
          y="56.71211"
-         id="tspan42589">CORDIC</tspan></text>
+         id="tspan4477">CORDIC</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,0.46302083,0.85989583)"
@@ -317,7 +317,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect20072)"><tspan
          x="113.53906"
          y="27.695837"
-         id="tspan42591">*-1</tspan></text>
+         id="tspan4479">*-1</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,0.57567646,8.7954965)"
@@ -325,7 +325,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect20072-9)"><tspan
          x="113.53906"
          y="27.695837"
-         id="tspan42593">*-1</tspan></text>
+         id="tspan4481">*-1</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,48.266822,3.3285122)"
@@ -333,7 +333,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect20072-6)"><tspan
          x="113.53906"
          y="27.695837"
-         id="tspan42595">+pi</tspan></text>
+         id="tspan4483">+pi</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,48.651335,9.9799582)"
@@ -341,7 +341,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect20072-6-4)"><tspan
          x="113.53906"
          y="27.695837"
-         id="tspan42597">-pi</tspan></text>
+         id="tspan4485">-pi</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,61.201375,10.071694)"
@@ -349,7 +349,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect20072-6-4-7)"><tspan
          x="113.53906"
          y="27.695837"
-         id="tspan42599">&gt;&gt;1</tspan></text>
+         id="tspan4487">&gt;&gt;1</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(0.26458333)"
@@ -362,9 +362,9 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect32115)"><tspan
          x="30.052734"
          y="29.26029"
-         id="tspan42603">2*W<tspan
+         id="tspan4491">2*W<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42601">ij</tspan></tspan></text>
+   id="tspan4489">ij</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,36.03664,17.908953)"
@@ -372,7 +372,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect32115-3)"><tspan
          x="30.052734"
          y="29.26029"
-         id="tspan42605">0</tspan></text>
+         id="tspan4493">0</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-0.88867116,-10.523738)"
@@ -380,11 +380,11 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect37438)"><tspan
          x="42.425781"
          y="70.273962"
-         id="tspan42611">W<tspan
+         id="tspan4499">W<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42607">jj</tspan> - W<tspan
+   id="tspan4495">jj</tspan> - W<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42609">ii</tspan></tspan></text>
+   id="tspan4497">ii</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-0.74835468,0.18708867)"
@@ -392,9 +392,9 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40794)"><tspan
          x="184.75"
          y="40.615759"
-         id="tspan42615">x<tspan
+         id="tspan4503">x<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42613">input</tspan></tspan></text>
+   id="tspan4501">input</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-0.7956144,7.839354)"
@@ -402,9 +402,9 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40794-1)"><tspan
          x="184.75"
          y="40.615759"
-         id="tspan42619">y<tspan
+         id="tspan4507">y<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42617">input</tspan></tspan></text>
+   id="tspan4505">input</tspan></tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 46.046983,25.388808 5.940496,-0.02425"
@@ -416,9 +416,9 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40794-1-9)"><tspan
          x="184.75"
          y="40.615759"
-         id="tspan42623">z<tspan
+         id="tspan4511">z<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42621">input</tspan></tspan></text>
+   id="tspan4509">input</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,14.465043,4.9094323)"
@@ -426,9 +426,9 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40794-1-0)"><tspan
          x="184.75"
          y="40.615759"
-         id="tspan42627">Z<tspan
+         id="tspan4515">Z<tspan
    style="font-size:65%;baseline-shift:sub"
-   id="tspan42625">out</tspan></tspan></text>
+   id="tspan4513">out</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-0.06614583,1.9182292)"
@@ -436,7 +436,7 @@
        style="font-size:10.6667px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect48812)"><tspan
          x="374.75"
          y="60.731554"
-         id="tspan42629">Θ</tspan></text>
+         id="tspan4517">Θ</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-16.66875,2.8442708)"
@@ -444,7 +444,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect53779)"><tspan
          x="139"
          y="15.115759"
-         id="tspan42631">if Wjj &lt; Wii </tspan></text>
+         id="tspan4519">if Wjj &lt; Wii </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,-17.519341,10.592625)"
@@ -452,7 +452,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect53779-6)"><tspan
          x="139"
          y="15.115759"
-         id="tspan42633">if Wjj &lt; Wii </tspan></text>
+         id="tspan4521">if Wjj &lt; Wii </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,34.735867,4.1334588)"
@@ -460,7 +460,7 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect53779-6-2)"><tspan
          x="139"
          y="15.115759"
-         id="tspan42635">if Wjj &lt; Wii and Wij &lt; 0 </tspan></text>
+         id="tspan4523">if Wjj &lt; Wii and Wij &gt;= 0 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,34.463361,10.395265)"
@@ -468,6 +468,6 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect53779-6-2-3)"><tspan
          x="139"
          y="15.115759"
-         id="tspan42637">if Wjj &lt; Wii and Wij &gt; 0 </tspan></text>
+         id="tspan4525">if Wjj &lt; Wii and Wij &gt; 0 </tspan></text>
   </g>
 </svg>

@@ -16,6 +16,7 @@ package common;
   parameter JACOBI_LOG2_N_PAIRS       = 2;
   parameter JACOBI_PAIR               = 2;
   parameter JACOBI_LOG2_PAIR          = 1;
+  parameter JACOBI_PI                 = 102944;
   
   function [FXP_MAX_WIDTH-1:0] fxp_round;
     input signed [FXP_MAX_WIDTH-1:0] in_dat;

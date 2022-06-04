@@ -3,7 +3,7 @@ module jacobi_top (
   input                       clk,
   input                       rst, 
 
-  input [JACOBI_INPUT_WORD_WIDTH-1:0]   in_dat_i,
+  input [JACOBI_INPUT_WORD_WIDTH-1:0] in_dat_i,
   input                       in_vld_i,
   output                      in_rdy_o,
 
@@ -17,12 +17,10 @@ module jacobi_top (
   **********************/
   wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_x;
   wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_y;
-  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_z;
   wire                                vectoring_in_vld;
 
-  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_x;
-  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_y;
-  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_dat_z;
+
+  wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_out_angle;
   wire                                vectoring_out_vld;
 
   wire                                ram_en_a;
@@ -70,12 +68,9 @@ module jacobi_top (
 
     .vectoring_in_dat_x_o(vectoring_in_dat_x),
     .vectoring_in_dat_y_o(vectoring_in_dat_y),
-    .vectoring_in_dat_z_o(vectoring_in_dat_z),
     .vectoring_in_vld_o(vectoring_in_vld),
     
-    .vectoring_out_dat_x_i(vectoring_out_dat_x),
-    .vectoring_out_dat_y_i(vectoring_out_dat_y),
-    .vectoring_out_dat_z_i(vectoring_out_dat_z),
+    .vectoring_angle_i(vectoring_out_angle),
     .vectoring_out_vld_i(vectoring_out_vld),
 
     .ram_en_a_o(ram_en_a),
@@ -101,18 +96,15 @@ module jacobi_top (
     .rotation_fifo_out_vld_i(rotation_fifo_out_vld)
   );
 
-  cordic #(.MODE("vectoring")) vectoring_cordic (
+  calc_angle_pipeline calc_angle_pipeline_i (
     .clk(clk),
     .rst(rst),
 
     .x_i(vectoring_in_dat_x),
     .y_i(vectoring_in_dat_y),
-    .z_i(vectoring_in_dat_z),
     .vld_i(vectoring_in_vld),
 
-    .x_o(vectoring_out_dat_x),
-    .y_o(vectoring_out_dat_y),
-    .z_o(vectoring_out_dat_z),
+    .angle_o(vectoring_out_angle),
     .vld_o(vectoring_out_vld)
   );
 

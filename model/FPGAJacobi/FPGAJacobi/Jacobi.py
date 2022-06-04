@@ -70,7 +70,7 @@ class Jacobi:
             sign.set_val(1)
         
         x, y, theta = self._vectoring_cordic.run(Ajj_ii, Aij2, zero)
-        theta = (theta + sign*pi_to_add) >> 1
+        theta.set_val((theta + sign*pi_to_add) >> 1)
         
         #diagonal
         temp_ii_i, temp_ii_j, _ = self._rotation_cordic.run(self._A[i,i], self._A[i,j], theta)
