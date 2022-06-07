@@ -49,6 +49,7 @@ module jacobi_top (
   wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_y;
   wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_z;
   wire                                rotation_fifo_out_vld;
+  wire                                rotation_fifo_out_rdy;
 
   
   /***************
@@ -93,7 +94,8 @@ module jacobi_top (
     .rotation_fifo_out_dat_x_i(rotation_fifo_out_dat_x),
     .rotation_fifo_out_dat_y_i(rotation_fifo_out_dat_y),
     .rotation_fifo_out_dat_z_i(rotation_fifo_out_dat_z),
-    .rotation_fifo_out_vld_i(rotation_fifo_out_vld)
+    .rotation_fifo_out_vld_i(rotation_fifo_out_vld),
+    .rotation_fifo_out_rdy_o(rotation_fifo_out_rdy)
   );
 
   calc_angle_pipeline calc_angle_pipeline_i (
@@ -139,26 +141,19 @@ module jacobi_top (
     .vld_o(rotation_out_vld)
   );
 
-  /*
-  FIFO (
-    clk,
-    rst,
+  
+  jacobi_fifo fifo_i (
+    .s_aclk(clk),
+    .s_aresetn(rst),
 
-    rotation_out_dat_x,
-    rotation_out_dat_y,
-    rotation_out_dat_z,
-    
-    rotation_fifo_out_dat_x,
-    rotation_fifo_out_dat_y,
-    rotation_fifo_out_dat_z
-  )
-  */
+    .s_axis_tvalid(rotation_out_vld),
+    .s_axis_tdata({rotation_out_dat_x,rotation_out_dat_y}),
 
-  //Temporary
-  assign rotation_fifo_out_dat_x = rotation_out_dat_x;
-  assign rotation_fifo_out_dat_y = rotation_out_dat_y;
-  assign rotation_fifo_out_dat_z = rotation_out_dat_z;
-  assign rotation_fifo_out_vld   = rotation_out_vld;
+    .m_axis_tvalid(rotation_fifo_out_vld),
+    .m_axis_tdata({rotation_fifo_out_dat_x,rotation_fifo_out_dat_y}),
+    .m_axis_tready(rotation_fifo_out_rdy)
+  );
+  
 
     
 endmodule

@@ -21,7 +21,7 @@ module jacobi_main_controller (
 
   // Input data from vectoring cordic
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_angle_i,
-  output                                vectoring_out_vld_i,
+  input                                 vectoring_out_vld_i,
 
   //Memory interface
   output                                ram_en_a_o,
@@ -46,7 +46,8 @@ module jacobi_main_controller (
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_x_i,
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_y_i,
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_z_i,
-  output                                rotation_fifo_out_vld_i
+  input                                 rotation_fifo_out_vld_i,
+  output                                rotation_fifo_out_rdy_o
 );
   
   
@@ -75,8 +76,9 @@ module jacobi_main_controller (
   // Input data counter
   reg unsigned [JACOBI_LOG2_N_INPUT_DATA-1:0] in_dat_counter_r;
 
-  // Idx array
+  // Indices and angles array 
   reg unsigned [JACOBI_LOG2_N-1:0] indices_shift_register_r [JACOBI_N_PAIRS-1:0][JACOBI_PAIR-1:0];
+  reg signed   [JACOBI_OUTPUT_WORD_WIDTH-1:0] angles_register_r [JACOBI_N_PAIRS-1:0];
 
   // Angle calculation
   reg unsigned [JACOBI_LOG2_N-1:0]       angle_a_matrix_col;
@@ -86,14 +88,16 @@ module jacobi_main_controller (
   reg unsigned [JACOBI_LOG2_N-1:0]       angle_b_matrix_row;
   reg unsigned [JACOBI_ADDR_WIDTH-1:0]   angle_ram_addr_b;
 
-  reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angle_pair_counter_r;
-  reg unsigned [JACOBI_LOG2_PAIR-1:0]    calc_angle_phase_counter_r;
+  reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angles_push_pair_counter_r;
+  reg unsigned [JACOBI_LOG2_PAIR-1:0]    calc_angles_push_phase_counter_r;
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angle_phase_counter_one_cycle_delayed_r;
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angle_phase_counter_two_cycles_delayed_r;
 
   reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_x_r;
   reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_y_r;
   reg unsigned                                vectoring_in_vld_r;
+  
+  reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angles_store_counter_r;
 
 
 
@@ -101,7 +105,7 @@ module jacobi_main_controller (
   /*******************
    * Type declarations
   *******************/
-  typedef enum {INIT, IDLE, RECEIVE_DATA, FINISH_RECEIVING, CALC_ANGLES_PUSH, CALC_ANGLES_WAIT, CALC_VALUES, DRAW_ROUND, SEND_DATA} main_fsm_t; //
+  typedef enum {INIT, IDLE, RECEIVE_DATA, CALC_ANGLES_PUSH, CALC_ANGLES_STORE, CALC_VALUES, DRAW_ROUND, SEND_DATA} main_fsm_t; //
   main_fsm_t main_fsm_r;
 
   /***************
@@ -158,53 +162,68 @@ module jacobi_main_controller (
           ram_en_a_r <= 1;
           ram_we_a_r <= 1;
           if (in_dat_counter_r == JACOBI_N_INPUT_DATA-1) begin
-            main_fsm_r <= FINISH_RECEIVING;
+            main_fsm_r <= CALC_ANGLES_PUSH;
           end
         end else begin
           ram_en_a_r <= 0;
           ram_we_a_r <= 0;
         end
       end
-
-      FINISH_RECEIVING: begin
-        ram_en_a_r <= 0;
-        ram_we_a_r <= 0;
-        main_fsm_r <= CALC_ANGLES_PUSH;
-      end
   
       
-      CALC_ANGLES_PUSH: begin// Pairs are shifted in circular pattern to the right in order to push subsequent pairs to pipeline
-
-        if (calc_angle_phase_counter_r == JACOBI_PAIR-1) begin
+      CALC_ANGLES_PUSH: begin 
+        // Pairs are shifted in circular pattern to the right in order to push subsequent pairs to pipeline
+        if (calc_angles_push_phase_counter_r == JACOBI_PAIR-1) begin
           indices_shift_register_r[0] <= indices_shift_register_r[1];
           indices_shift_register_r[1] <= indices_shift_register_r[2];
           indices_shift_register_r[2] <= indices_shift_register_r[3];
           indices_shift_register_r[3] <= indices_shift_register_r[0];
-
-          if (calc_angle_pair_counter_r == JACOBI_N_PAIRS-1) begin
-            main_fsm_r <= CALC_ANGLES_WAIT;
-          end
         end
+        
         ram_en_a_r   <= 1;
         ram_we_a_r   <= 0;
         ram_addr_a_r <= angle_ram_addr_a;
         ram_en_b_r   <= 1;
         ram_we_b_r   <= 0;
         ram_addr_b_r <= angle_ram_addr_b;
+
+        if (calc_angles_push_pair_counter_r == JACOBI_N_PAIRS-1 && calc_angles_push_phase_counter_r == JACOBI_PAIR-1) begin
+          main_fsm_r <= CALC_ANGLES_STORE;
+        end
       end
 
 
-      CALC_ANGLES_WAIT:
-        main_fsm_r <= CALC_ANGLES_WAIT;
+      CALC_ANGLES_STORE: begin //read from pipeline and store in registers
+        ram_en_a_r <= 0;
+        ram_en_b_r <= 0;
+        if (vectoring_out_vld_i == 1) begin
+          angles_register_r[3] <= vectoring_angle_i;
+          angles_register_r[2] <= angles_register_r[3];
+          angles_register_r[1] <= angles_register_r[2];
+          angles_register_r[0] <= angles_register_r[1];
+          if (calc_angles_store_counter_r == JACOBI_N_PAIRS-1) begin
+            main_fsm_r <= CALC_VALUES;
+          end
+        end
+      end
 
       CALC_VALUES:
-        main_fsm_r <= CALC_VALUES;
-
-      DRAW_ROUND:
         main_fsm_r <= DRAW_ROUND;
 
-      SEND_DATA:
+      DRAW_ROUND: begin
+        indices_shift_register_r[1][0] <= indices_shift_register_r[2][0];
+        indices_shift_register_r[2][0] <= indices_shift_register_r[3][0];
+        indices_shift_register_r[3][0] <= indices_shift_register_r[3][1];
+        indices_shift_register_r[3][1] <= indices_shift_register_r[2][1];
+        indices_shift_register_r[2][1] <= indices_shift_register_r[1][1];
+        indices_shift_register_r[1][1] <= indices_shift_register_r[0][1];
+        indices_shift_register_r[0][1] <= indices_shift_register_r[1][0];
         main_fsm_r <= SEND_DATA;
+      end
+        
+
+      SEND_DATA:
+        main_fsm_r <= IDLE;
     endcase
 
     if (rst == 1) begin
@@ -226,13 +245,26 @@ module jacobi_main_controller (
 
   end
 
+  /******** Combinational process for main FSM ********/
   always_comb begin : main_fsm_comb
-
+    
+    // Input ready
     if (main_fsm_r == IDLE || main_fsm_r == RECEIVE_DATA) begin
       in_rdy <= 1;
     end else begin
       in_rdy <= 0;
     end
+    
+    //CALC_ANGLES- address computation
+    if (calc_angles_push_phase_counter_r == 0) begin //Wjj
+      angle_a_matrix_col <= indices_shift_register_r[0][1];
+      angle_a_matrix_row <= indices_shift_register_r[0][1];
+    end else begin //Wii
+      angle_a_matrix_col <= indices_shift_register_r[0][0];
+      angle_a_matrix_row <= indices_shift_register_r[0][0];
+    end
+    angle_b_matrix_row <= indices_shift_register_r[0][0];
+    angle_b_matrix_col <= indices_shift_register_r[0][1];
 
   end
 
@@ -285,54 +317,47 @@ module jacobi_main_controller (
 
   /******** Calc Angles Phase counter ********/ 
   // Phase 0: Fetch diagonal elements (ii,jj), Phase 1: Fetch no-diagonal element (i,j)
-  always_ff @(posedge clk) begin : calc_angle_phase_counter_p
+  always_ff @(posedge clk) begin : calc_angle_push_phase_counter_p
     if (main_fsm_r == CALC_ANGLES_PUSH) begin
-      if (calc_angle_phase_counter_r == JACOBI_PAIR-1) begin
-        calc_angle_phase_counter_r <= 0;
+      if (calc_angles_push_phase_counter_r == JACOBI_PAIR-1) begin
+        calc_angles_push_phase_counter_r <= 0;
       end else begin
-        calc_angle_phase_counter_r <= calc_angle_phase_counter_r + 1;
+        calc_angles_push_phase_counter_r <= calc_angles_push_phase_counter_r + 1;
       end
+    end else begin
+      calc_angles_push_phase_counter_r <= 0;
     end
-    calc_angle_phase_counter_one_cycle_delayed_r <= calc_angle_phase_counter_r;
+    calc_angle_phase_counter_one_cycle_delayed_r <= calc_angles_push_phase_counter_r;
     calc_angle_phase_counter_two_cycles_delayed_r <= calc_angle_phase_counter_one_cycle_delayed_r;
     if (rst == 1) begin
-      calc_angle_phase_counter_r <= 0;
+      calc_angles_push_phase_counter_r <= 0;
+      calc_angle_phase_counter_one_cycle_delayed_r <= 0;
+      calc_angle_phase_counter_two_cycles_delayed_r <= 0;
     end
     
   end
 
-  /******** Calc Angles Pair counter ********/
-  always_ff @(posedge clk) begin : calc_angle_pair_counter_p
+  /******** Calc Angles Push Pair counter ********/
+  always_ff @(posedge clk) begin : calc_angle_push_pair_counter_p
     if (main_fsm_r == CALC_ANGLES_PUSH) begin
-      if (calc_angle_phase_counter_r == JACOBI_PAIR-1) begin
-        if (calc_angle_pair_counter_r == JACOBI_N_PAIRS-1) begin
-          calc_angle_pair_counter_r <= 0;
+      if (calc_angles_push_phase_counter_r == JACOBI_PAIR-1) begin
+        if (calc_angles_push_pair_counter_r == JACOBI_N_PAIRS-1) begin
+          calc_angles_push_pair_counter_r <= 0;
         end else begin
-          calc_angle_pair_counter_r <= calc_angle_pair_counter_r + 1;
+          calc_angles_push_pair_counter_r <= calc_angles_push_pair_counter_r + 1;
         end
       end
+    end else begin
+      calc_angles_push_pair_counter_r <= 0;
     end
 
     if (rst == 1) begin
-      calc_angle_pair_counter_r <= 0;
+      calc_angles_push_pair_counter_r <= 0;
     end 
   end
-
-  /******** Address generator for angle computation ********/
-  always_comb begin : calc_angles_addr_gen_p
-    if (calc_angle_phase_counter_r == 0) begin //Wjj
-      angle_a_matrix_col <= indices_shift_register_r[0][1];
-      angle_a_matrix_row <= indices_shift_register_r[0][1];
-    end else begin //Wii
-      angle_a_matrix_col <= indices_shift_register_r[0][0];
-      angle_a_matrix_row <= indices_shift_register_r[0][0];
-    end
-    angle_b_matrix_row <= indices_shift_register_r[0][0];
-    angle_b_matrix_col <= indices_shift_register_r[0][1];
-  end
-
-  /******** Push data to vectoring cordic ********/
-  always_ff @(posedge clk) begin : calc_angles_push_to_cordic_p //two clock cycles latency for memory read
+  
+  always_ff @(posedge clk) begin : calc_angle_push_data_to_cordic_p
+    // Calculate 2Wij and Wjj-Wii and push data to cordic
     if (calc_angle_phase_counter_two_cycles_delayed_r == 0 && calc_angle_phase_counter_one_cycle_delayed_r == 1) begin
       vectoring_in_dat_x_r <= ram_dout_a_i;
       vectoring_in_dat_y_r <= ram_dout_b_i;
@@ -343,6 +368,21 @@ module jacobi_main_controller (
       vectoring_in_vld_r   <= 1;
     end else begin
       vectoring_in_vld_r   <= 0;
+    end
+  end
+
+  /******** Calc Angles Store Counter ********/
+  always_ff @(posedge clk) begin : calc_angles_store_counter_p 
+    if (vectoring_out_vld_i == 1) begin
+      if (calc_angles_store_counter_r == JACOBI_N_PAIRS-1) begin
+        calc_angles_store_counter_r <= 0;
+      end else begin
+        calc_angles_store_counter_r <= calc_angles_store_counter_r + 1;
+      end
+    end
+
+    if (rst == 1) begin
+      calc_angles_store_counter_r <= 0;
     end
   end
 
