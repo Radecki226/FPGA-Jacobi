@@ -7,9 +7,12 @@ module jacobi_top (
   input                       in_vld_i,
   output                      in_rdy_o,
 
-  output [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
+  output [32-1:0]             out_dat_o,
   output                      out_vld_o,
-  input                       out_rdy_i
+  input                       out_rdy_i,
+  output                      out_last_o,
+
+  output reg                  debug_led_o = 0
 );
 
   /*********************
@@ -50,6 +53,7 @@ module jacobi_top (
   wire [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_z;
   wire                                rotation_fifo_out_vld;
   wire                                rotation_fifo_out_rdy;
+  
 
   
   /***************
@@ -58,13 +62,14 @@ module jacobi_top (
   jacobi_main_controller main_controller (
     .clk(clk),
     .rst(rst),
-    
+    //
     .in_dat_i(in_dat_i),
     .in_vld_i(in_vld_i),
     .in_rdy_o(in_rdy_o),
 
     .out_dat_o(out_dat_o),
     .out_vld_o(out_vld_o),
+    .out_last_o(out_last_o),
     .out_rdy_i(out_rdy_i),
 
     .vectoring_in_dat_x_o(vectoring_in_dat_x),
@@ -93,9 +98,7 @@ module jacobi_top (
     
     .rotation_fifo_out_dat_x_i(rotation_fifo_out_dat_x),
     .rotation_fifo_out_dat_y_i(rotation_fifo_out_dat_y),
-    .rotation_fifo_out_dat_z_i(rotation_fifo_out_dat_z),
-    .rotation_fifo_out_vld_i(rotation_fifo_out_vld),
-    .rotation_fifo_out_rdy_o(rotation_fifo_out_rdy)
+    .rotation_fifo_out_vld_i(rotation_fifo_out_vld)
   );
 
   calc_angle_pipeline calc_angle_pipeline_i (
@@ -109,7 +112,8 @@ module jacobi_top (
     .angle_o(vectoring_out_angle),
     .vld_o(vectoring_out_vld)
   );
-
+  
+  
   dual_port_ram #(JACOBI_ADDR_WIDTH, JACOBI_MEM_SIZE, JACOBI_OUTPUT_WORD_WIDTH) bram0 (
     .clk_a(clk),
     .en_a(ram_en_a),
@@ -135,24 +139,17 @@ module jacobi_top (
     .z_i(rotation_in_dat_z),
     .vld_i(rotation_in_vld),
 
-    .x_o(rotation_out_dat_x),
-    .y_o(rotation_out_dat_y),
-    .z_o(rotation_out_dat_z),
-    .vld_o(rotation_out_vld)
+    .x_o(rotation_fifo_out_dat_x),
+    .y_o(rotation_fifo_out_dat_y),
+    .vld_o(rotation_fifo_out_vld)
   );
 
-  
-  jacobi_fifo fifo_i (
-    .s_aclk(clk),
-    .s_aresetn(rst),
+  always_ff @(posedge clk) begin
+    if (rst == 1) begin
+      debug_led_o <= 1;
+    end
+  end
 
-    .s_axis_tvalid(rotation_out_vld),
-    .s_axis_tdata({rotation_out_dat_x,rotation_out_dat_y}),
-
-    .m_axis_tvalid(rotation_fifo_out_vld),
-    .m_axis_tdata({rotation_fifo_out_dat_x,rotation_fifo_out_dat_y}),
-    .m_axis_tready(rotation_fifo_out_rdy)
-  );
   
 
     

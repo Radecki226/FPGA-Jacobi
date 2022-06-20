@@ -10,8 +10,9 @@ module jacobi_main_controller (
   output                                in_rdy_o,
 
   // Output interface to microcontroller
-  output signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
+  output signed [31:0]                  out_dat_o,
   output                                out_vld_o,
+  output reg                            out_last_o,
   input                                 out_rdy_i,
 
   // Output data to pipelined vectoring cordic (angle calc)
@@ -45,9 +46,7 @@ module jacobi_main_controller (
   // Input data from rotation cordic output fifo
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_x_i,
   input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_y_i,
-  input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_fifo_out_dat_z_i,
-  input                                 rotation_fifo_out_vld_i,
-  output                                rotation_fifo_out_rdy_o
+  input                                 rotation_fifo_out_vld_i
 );
   
   
@@ -98,7 +97,10 @@ module jacobi_main_controller (
   reg unsigned                                vectoring_in_vld_r;
   
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angles_store_counter_r;
+  
+  reg unsigned [31:0] send_data_counter_r;
 
+  reg out_vld_s;
 
 
 
@@ -222,8 +224,13 @@ module jacobi_main_controller (
       end
         
 
-      SEND_DATA:
-        main_fsm_r <= IDLE;
+      SEND_DATA: begin
+        //ram_en_b_r <= 1;
+        //ram_addr_b_r <= send_data_counter_r;
+        if (send_data_counter_r == 99 && out_vld_s == 1) begin
+          main_fsm_r <= INIT;
+        end
+      end
     endcase
 
     if (rst == 1) begin
@@ -386,6 +393,43 @@ module jacobi_main_controller (
     end
   end
 
+  always_ff @(posedge clk) begin : send_data_counter_p
+    if (out_vld_s == 1 && out_rdy_i == 1) begin
+      if (send_data_counter_r == 99) begin
+        send_data_counter_r <= 0;
+      end else begin
+        send_data_counter_r <= send_data_counter_r + 1;
+      end
+    end
+
+    if (rst == 1) begin
+      send_data_counter_r <= 0;
+    end
+
+  end
+
+/*  always_ff @(posedge clk) begin : display_valid_p
+    if ((send_data_counter_r > 0 || send_data_counter_two_cycles_delayed_r > 0) && send_data_counter_two_cycles_delayed_r < 99) begin
+      vld_out_r <= 1;
+    end else begin
+      vld_out_r <= 0;
+    end
+  end*/
+  always_comb begin
+    if (main_fsm_r == SEND_DATA) begin
+      out_vld_s = 1;
+    end else begin
+      out_vld_s = 0;
+    end
+    
+    if (send_data_counter_r == 99) begin
+      out_last_o <= 1;
+    end else begin
+      out_last_o <= 0;
+    end
+    
+  end
+
   assign in_rdy_o = in_rdy;
 
   assign ram_din_a_o = ram_din_a_r;
@@ -401,6 +445,9 @@ module jacobi_main_controller (
   assign vectoring_in_dat_x_o = vectoring_in_dat_x_r;
   assign vectoring_in_dat_y_o = vectoring_in_dat_y_r;
   assign vectoring_in_vld_o = vectoring_in_vld_r;
+
+  assign out_vld_o = out_vld_s;
+  assign out_dat_o = send_data_counter_r;
 
 endmodule
 

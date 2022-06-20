@@ -93,7 +93,7 @@ class monitor;
         /*Eigenvalues go first then eigenvectors we have to choose with which matrix we are comparing output data*/
         if (n_iter > (JACOBI_N/2)*(JACOBI_N+1) - 1) begin
           
-          $fscanf(fd_w, "%h", item.correct_data);
+          $fscanf(fd_v, "%h", item.correct_data);
           
           if (n_iter == (JACOBI_N/2)*(JACOBI_N+1) + JACOBI_N*JACOBI_N - 1) begin
             n_iter = 0;
@@ -101,7 +101,7 @@ class monitor;
             n_iter ++;
           end
         else begin
-          $fscanf(fd_v, "%h", item.correct_data);
+          $fscanf(fd_w, "%h", item.correct_data);
           n_iter++;
         end
 
