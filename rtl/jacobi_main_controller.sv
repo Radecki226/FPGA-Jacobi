@@ -139,9 +139,11 @@ module jacobi_main_controller (
   reg unsigned                           calc_values_saving_finished_r;
 
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] change_pair_pair_counter_r;
-  reg unsigned [3:0]                     draw_round_counter_r;
+  reg unsigned [4:0]                     draw_round_counter_r;
 
   reg unsigned [2:0]                     calc_values_write_matrix_data_row_counter_r;
+
+  reg unsigned [JACOBI_LOG2_N-1:0] current_indices_in_order_r [JACOBI_PAIR-1:0];
 
 
 
@@ -198,7 +200,7 @@ module jacobi_main_controller (
       INIT: begin //Initialize V matrix with eye matrix
         // Place 1 on main diagonal
         if (init_row_counter_r == init_col_counter_r) begin
-          ram_din_a_r <= 1;
+          ram_din_a_r <= 1 <<< 15;
         end else begin
           ram_din_a_r <= 0;
         end
@@ -353,51 +355,60 @@ module jacobi_main_controller (
     end else begin
       in_rdy <= 0;
     end
+
+    // Sort indices
+    if (indices_shift_register_r[0][0] < indices_shift_register_r[0][1]) begin
+      current_indices_in_order_r[0] <= indices_shift_register_r[0][0];
+      current_indices_in_order_r[1] <= indices_shift_register_r[0][1];
+    end else begin
+      current_indices_in_order_r[0] <= indices_shift_register_r[0][1];
+      current_indices_in_order_r[1] <= indices_shift_register_r[0][0];
+    end
     
     //CALC_ANGLES- address computation
     if (calc_angles_push_phase_counter_r == 0) begin //Wjj
-      angle_a_matrix_col <= indices_shift_register_r[0][1];
-      angle_a_matrix_row <= indices_shift_register_r[0][1];
+      angle_a_matrix_col <= current_indices_in_order_r[1];
+      angle_a_matrix_row <= current_indices_in_order_r[1];
     end else begin //Wii
-      angle_a_matrix_col <= indices_shift_register_r[0][0];
-      angle_a_matrix_row <= indices_shift_register_r[0][0];
+      angle_a_matrix_col <= current_indices_in_order_r[0];
+      angle_a_matrix_row <= current_indices_in_order_r[0];
     end
-    angle_b_matrix_row <= indices_shift_register_r[0][0];
-    angle_b_matrix_col <= indices_shift_register_r[0][1];
+    angle_b_matrix_row <= current_indices_in_order_r[0];
+    angle_b_matrix_col <= current_indices_in_order_r[1];
 
     //CALC_VALUES - getting values address computation
     if (calc_values_in_one_pair_counter_r == 0) begin
-      value_a_matrix_row <= indices_shift_register_r[0][0];
-      value_a_matrix_col <= indices_shift_register_r[0][0];
-      value_b_matrix_row <= indices_shift_register_r[0][0];
-      value_b_matrix_col <= indices_shift_register_r[0][1];
+      value_a_matrix_row <= current_indices_in_order_r[0];
+      value_a_matrix_col <= current_indices_in_order_r[0];
+      value_b_matrix_row <= current_indices_in_order_r[0];
+      value_b_matrix_col <= current_indices_in_order_r[1];
 
     end else if (calc_values_in_one_pair_counter_r == 1) begin
-      value_a_matrix_row <= indices_shift_register_r[0][0];
-      value_a_matrix_col <= indices_shift_register_r[0][1];
-      value_b_matrix_row <= indices_shift_register_r[0][1];
-      value_b_matrix_col <= indices_shift_register_r[0][1];
+      value_a_matrix_row <= current_indices_in_order_r[0];
+      value_a_matrix_col <= current_indices_in_order_r[1];
+      value_b_matrix_row <= current_indices_in_order_r[1];
+      value_b_matrix_col <= current_indices_in_order_r[1];
     end else begin
-      value_a_matrix_row <= indices_shift_register_r[0][0];
+      value_a_matrix_row <= current_indices_in_order_r[0];
       value_a_matrix_col <= calc_values_column_ind_r;
-      value_b_matrix_row <= indices_shift_register_r[0][1];
+      value_b_matrix_row <= current_indices_in_order_r[1];
       value_b_matrix_col <= calc_values_column_ind_r;
     end
 
     //CALC_VALUES - writing values address computation
     if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 2) begin
-      value_write_a_matrix_row <= indices_shift_register_r[0][0];
+      value_write_a_matrix_row <= current_indices_in_order_r[0];
       value_write_a_matrix_col <= calc_values_write_column_ind_r;
-      value_write_b_matrix_row <= indices_shift_register_r[0][1];
+      value_write_b_matrix_row <= current_indices_in_order_r[1];
       value_write_b_matrix_col <= calc_values_write_column_ind_r;
     end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 2) begin
-      value_write_a_matrix_row <= indices_shift_register_r[0][0];
-      value_write_a_matrix_col <= indices_shift_register_r[0][0];
-      value_write_b_matrix_row <= indices_shift_register_r[0][1];
-      value_write_b_matrix_col <= indices_shift_register_r[0][1];
+      value_write_a_matrix_row <= current_indices_in_order_r[0];
+      value_write_a_matrix_col <= current_indices_in_order_r[0];
+      value_write_b_matrix_row <= current_indices_in_order_r[1];
+      value_write_b_matrix_col <= current_indices_in_order_r[1];
     end else begin
-      value_write_a_matrix_row <= indices_shift_register_r[0][0];
-      value_write_a_matrix_col <= indices_shift_register_r[0][1];
+      value_write_a_matrix_row <= current_indices_in_order_r[0];
+      value_write_a_matrix_col <= current_indices_in_order_r[1];
     end
   end
 
@@ -541,16 +552,16 @@ module jacobi_main_controller (
   always_ff @(posedge clk) begin : calc_values_column_ind_p
     if (main_fsm_r == CALC_VALUES) begin
       if (calc_values_in_one_pair_counter_r == 1) begin
-        if (indices_shift_register_r[0][0] != 0 && indices_shift_register_r[0][1] != 0) begin
+        if (current_indices_in_order_r[0] != 0 && current_indices_in_order_r[1] != 0) begin
           calc_values_column_ind_r <= 0;
-        end else if (indices_shift_register_r[0][0] != 1 && indices_shift_register_r[0][1] != 1) begin
+        end else if (current_indices_in_order_r[0] != 1 && current_indices_in_order_r[1] != 1) begin
           calc_values_column_ind_r <= 1;
         end else begin
           calc_values_column_ind_r <= 2;
         end
       end else begin
-        if (calc_values_column_ind_r == indices_shift_register_r[0][0] - 1 || calc_values_column_ind_r == indices_shift_register_r[0][1] - 1) begin
-          if (calc_values_column_ind_r == indices_shift_register_r[0][0] - 2 || calc_values_column_ind_r == indices_shift_register_r[0][1] - 2) begin
+        if (calc_values_column_ind_r == current_indices_in_order_r[0] - 1 || calc_values_column_ind_r == current_indices_in_order_r[1] - 1) begin
+          if (calc_values_column_ind_r == current_indices_in_order_r[0] - 2 || calc_values_column_ind_r == current_indices_in_order_r[1] - 2) begin
             calc_values_column_ind_r <= calc_values_column_ind_r + 3;
           end else begin
             calc_values_column_ind_r <= calc_values_column_ind_r + 2;
@@ -580,10 +591,10 @@ module jacobi_main_controller (
       end else if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
         ram_en_a_r   <= 1;
         ram_we_a_r   <= 0;
-        ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][0] + JACOBI_V_OFFSET;
+        ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
         ram_en_b_r   <= 1;
         ram_we_b_r   <= 0;
-        ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][1] + JACOBI_V_OFFSET;
+        ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
         calc_values_push_values_to_cordic_r <= 1;
         calc_values_get_matrix_data_row_counter_r <= calc_values_get_matrix_data_row_counter_r + 1;
       end else begin
@@ -712,16 +723,16 @@ module jacobi_main_controller (
   always_ff @(posedge clk) begin : calc_values_write_column_ind_p
     if (main_fsm_r == CALC_VALUES) begin
       if (!calc_values_valid_r) begin
-        if (indices_shift_register_r[0][0] != 0 && indices_shift_register_r[0][1] != 0) begin
+        if (current_indices_in_order_r[0] != 0 && current_indices_in_order_r[1] != 0) begin
           calc_values_write_column_ind_r <= 0;
-        end else if (indices_shift_register_r[0][0] != 1 && indices_shift_register_r[0][1] != 1) begin
+        end else if (current_indices_in_order_r[0] != 1 && current_indices_in_order_r[1] != 1) begin
           calc_values_write_column_ind_r <= 1;
         end else begin
           calc_values_write_column_ind_r <= 2;
         end
       end else begin
-        if (calc_values_write_column_ind_r == indices_shift_register_r[0][0] - 1 || calc_values_write_column_ind_r == indices_shift_register_r[0][1] - 1) begin
-          if (calc_values_write_column_ind_r == indices_shift_register_r[0][0] - 2 || calc_values_write_column_ind_r == indices_shift_register_r[0][1] - 2) begin
+        if (calc_values_write_column_ind_r == current_indices_in_order_r[0] - 1 || calc_values_write_column_ind_r == current_indices_in_order_r[1] - 1) begin
+          if (calc_values_write_column_ind_r == current_indices_in_order_r[0] - 2 || calc_values_write_column_ind_r == current_indices_in_order_r[1] - 2) begin
             calc_values_write_column_ind_r <= calc_values_write_column_ind_r + 3;
           end else begin
             calc_values_write_column_ind_r <= calc_values_write_column_ind_r + 2;
@@ -754,12 +765,12 @@ module jacobi_main_controller (
         end else if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 2) begin
           ram_en_a_r   <= 1;
           ram_we_a_r   <= 1;
-          ram_addr_a_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][0] + JACOBI_V_OFFSET;
+          ram_addr_a_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
           ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
 
           ram_en_b_r   <= 1;
           ram_we_b_r   <= 1;
-          ram_addr_b_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][1] + JACOBI_V_OFFSET;
+          ram_addr_b_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
           ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
 
           calc_values_write_matrix_data_row_counter_r <= calc_values_write_matrix_data_row_counter_r + 1;

@@ -19,7 +19,7 @@ package common;
   parameter JACOBI_PI                 = 102944;
   parameter JACOBI_MATRIX_VALUES_IN_ONE_PAIR = 15;
   parameter JACOBI_LOG2_MATRIX_VALUES_IN_ONE_PAIR = 4;
-  parameter JACOBI_N_ROUNDS           = 12;
+  parameter JACOBI_N_ROUNDS           = 28;
   
   function [FXP_MAX_WIDTH-1:0] fxp_round;
     input signed [FXP_MAX_WIDTH-1:0] in_dat;
