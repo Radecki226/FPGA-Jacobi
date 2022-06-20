@@ -96,6 +96,13 @@ module jacobi_main_controller (
   reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_x_r;
   reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_y_r;
   reg unsigned                                vectoring_in_vld_r;
+
+  reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_x_r;
+  reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_y_r;
+  reg unsigned [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_z_r;
+  reg unsigned                                rotation_in_vld_r;
+
+  reg unsigned                                rotation_fifo_out_rdy_r;
   
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_angles_store_counter_r;
 
@@ -116,12 +123,10 @@ module jacobi_main_controller (
   reg unsigned [JACOBI_ADDR_WIDTH-1:0]   value_write_ram_addr_b;
 
   reg unsigned [4:0]                     calc_values_in_one_pair_counter_r;
-  reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] calc_values_pair_counter;
   reg unsigned [JACOBI_LOG2_N-1:0]       calc_values_column_ind_r;
   reg unsigned                           calc_values_push_values_to_cordic_r;
-  reg unsigned                           calc_values_push_values_to_cordic_one_cycle_delayed_r
+  reg unsigned                           calc_values_push_values_to_cordic_one_cycle_delayed_r;
   reg unsigned [2:0]                     calc_values_get_matrix_data_row_counter_r;
-  reg unsigned                           calc_values_ready_to_push_to_cordic_r;
   
   // pushing to cordic
   reg unsigned [4:0]                     calc_values_cordic_receive_counter_r;
@@ -132,6 +137,11 @@ module jacobi_main_controller (
 
   reg unsigned [JACOBI_LOG2_N-1:0]       calc_values_write_column_ind_r;
   reg unsigned                           calc_values_saving_finished_r;
+
+  reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] change_pair_pair_counter_r;
+  reg unsigned [3:0]                     draw_round_counter_r;
+
+  reg unsigned [2:0]                     calc_values_write_matrix_data_row_counter_r;
 
 
 
@@ -175,7 +185,7 @@ module jacobi_main_controller (
     .k(value_write_a_matrix_col),
     .addr(value_write_ram_addr_a)
   );
-  jacobi_addr_gen_lut b_port_value_calc_addr_gen (
+  jacobi_addr_gen_lut b_port_value_write_calc_addr_gen (
     .n(value_write_b_matrix_row),
     .k(value_write_b_matrix_col),
     .addr(value_write_ram_addr_b)
@@ -281,7 +291,13 @@ module jacobi_main_controller (
         indices_shift_register_r[2] <= indices_shift_register_r[3];
         indices_shift_register_r[3] <= indices_shift_register_r[0];
 
-        change_pair_pair_counter <= change_pair_pair_counter + 1;
+        if (change_pair_pair_counter_r < (JACOBI_N >>> 1) - 1) begin
+          change_pair_pair_counter_r <= change_pair_pair_counter_r + 1;
+          main_fsm_r <= CALC_VALUES;
+        end else begin
+          change_pair_pair_counter_r <= 0;
+          main_fsm_r <= DRAW_ROUND;
+        end
       end
 
       DRAW_ROUND: begin
@@ -292,12 +308,20 @@ module jacobi_main_controller (
         indices_shift_register_r[2][1] <= indices_shift_register_r[1][1];
         indices_shift_register_r[1][1] <= indices_shift_register_r[0][1];
         indices_shift_register_r[0][1] <= indices_shift_register_r[1][0];
-        main_fsm_r <= SEND_DATA;
+
+        if (draw_round_counter_r < JACOBI_N_ROUNDS - 1) begin
+          draw_round_counter_r <= draw_round_counter_r + 1;
+          main_fsm_r <= CALC_ANGLES_PUSH;
+        end else begin
+          draw_round_counter_r <= 0;
+          main_fsm_r <= SEND_DATA;
+        end
       end
         
 
-      SEND_DATA:
+      SEND_DATA: begin
         main_fsm_r <= IDLE;
+      end
     endcase
 
     if (rst == 1) begin
@@ -314,7 +338,8 @@ module jacobi_main_controller (
       indices_shift_register_r[2][1] <= 5;
       indices_shift_register_r[3][0] <= 3;
       indices_shift_register_r[3][1] <= 4;
-      calc_values_ready_to_push_to_cordic_r <= 1;
+      draw_round_counter_r <= 0;
+      change_pair_pair_counter_r <= 0;
     end
 
   end
@@ -365,11 +390,14 @@ module jacobi_main_controller (
       value_write_a_matrix_col <= calc_values_write_column_ind_r;
       value_write_b_matrix_row <= indices_shift_register_r[0][1];
       value_write_b_matrix_col <= calc_values_write_column_ind_r;
-    end else begin
+    end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 2) begin
       value_write_a_matrix_row <= indices_shift_register_r[0][0];
       value_write_a_matrix_col <= indices_shift_register_r[0][0];
       value_write_b_matrix_row <= indices_shift_register_r[0][1];
       value_write_b_matrix_col <= indices_shift_register_r[0][1];
+    end else begin
+      value_write_a_matrix_row <= indices_shift_register_r[0][0];
+      value_write_a_matrix_col <= indices_shift_register_r[0][1];
     end
   end
 
@@ -496,14 +524,13 @@ module jacobi_main_controller (
   /********* Calc values in one pair counter **/
   always_ff @(posedge clk) begin : calc_values_in_one_pair_cnt_p
     if (main_fsm_r == CALC_VALUES) begin
-      if (calc_values_ready_to_push_to_cordic_r) begin
-        if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
-          calc_values_in_one_pair_counter_r <= calc_values_in_one_pair_counter_r + 1;
-        end
-      end else begin
-        calc_values_in_one_pair_counter_r <= 0;
+      if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
+        calc_values_in_one_pair_counter_r <= calc_values_in_one_pair_counter_r + 1;
       end
+    end else begin
+      calc_values_in_one_pair_counter_r <= 0;
     end
+
 
     if (rst == 1) begin
       calc_values_in_one_pair_counter_r <= 0;
@@ -542,31 +569,29 @@ module jacobi_main_controller (
   /********* Calc Values matrix value getter ******/
   always_ff @(posedge clk) begin : calc_values_get_matrix_data_p
     if (main_fsm_r == CALC_VALUES) begin
-      if (calc_values_ready_to_push_to_cordic_r) begin
-        if (calc_values_in_one_pair_counter_r < JACOBI_N) begin
-          ram_en_a_r   <= 1;
-          ram_we_a_r   <= 0;
-          ram_addr_a_r <= value_ram_addr_a;
-          ram_en_b_r   <= 1;
-          ram_we_b_r   <= 0;
-          ram_addr_b_r <= value_ram_addr_b;
-          calc_values_push_values_to_cordic_r <= 1;
-        end else if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
-          ram_en_a_r   <= 1;
-          ram_we_a_r   <= 0;
-          ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][0] + JACOBI_V_OFFSET;
-          ram_en_b_r   <= 1;
-          ram_we_b_r   <= 0;
-          ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][1] + JACOBI_V_OFFSET;
-          calc_values_push_values_to_cordic_r <= 1;
-          calc_values_get_matrix_data_row_counter_r <= calc_values_get_matrix_data_row_counter_r + 1;
-        end else begin
-          calc_values_push_values_to_cordic_r <= 0;
-        end
+      if (calc_values_in_one_pair_counter_r < JACOBI_N) begin
+        ram_en_a_r   <= 1;
+        ram_we_a_r   <= 0;
+        ram_addr_a_r <= value_ram_addr_a;
+        ram_en_b_r   <= 1;
+        ram_we_b_r   <= 0;
+        ram_addr_b_r <= value_ram_addr_b;
+        calc_values_push_values_to_cordic_r <= 1;
+      end else if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
+        ram_en_a_r   <= 1;
+        ram_we_a_r   <= 0;
+        ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][0] + JACOBI_V_OFFSET;
+        ram_en_b_r   <= 1;
+        ram_we_b_r   <= 0;
+        ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][1] + JACOBI_V_OFFSET;
+        calc_values_push_values_to_cordic_r <= 1;
+        calc_values_get_matrix_data_row_counter_r <= calc_values_get_matrix_data_row_counter_r + 1;
       end else begin
-        calc_values_get_matrix_data_row_counter_r <= 0;
         calc_values_push_values_to_cordic_r <= 0;
       end
+    end else begin
+      calc_values_get_matrix_data_row_counter_r <= 0;
+      calc_values_push_values_to_cordic_r <= 0;
     end
 
 
@@ -591,17 +616,17 @@ module jacobi_main_controller (
   always_ff @(posedge clk) begin : calc_values_push_to_cordic_p
     if (main_fsm_r == CALC_VALUES) begin
       if (calc_values_push_values_to_cordic_one_cycle_delayed_r) begin
-        rotation_in_dat_x_o <= ram_dout_a_i;
-        rotation_in_dat_y_o <= ram_dout_b_i;
-        rotation_in_dat_z_o <= angles_register_r[0];
-        rotation_in_vld_o <= 1;
+        rotation_in_dat_x_r <= ram_dout_a_i;
+        rotation_in_dat_y_r <= ram_dout_b_i;
+        rotation_in_dat_z_r <= angles_register_r[0];
+        rotation_in_vld_r <= 1;
       end else begin
-        rotation_in_vld_o <= 0;
+        rotation_in_vld_r <= 0;
       end
     end
 
     if (rst == 1) begin
-      rotation_in_vld_o <= 0;
+      rotation_in_vld_r <= 0;
     end
   end
 
@@ -625,23 +650,23 @@ module jacobi_main_controller (
   /******** Get data from cordic ******/
   always_ff @(posedge clk) begin : calc_values_get_data_from_cordic_p
     if (main_fsm_r == CALC_VALUES) begin
-      rotation_fifo_out_rdy_o <= 1;
+      rotation_fifo_out_rdy_r <= 1;
       if (rotation_fifo_out_vld_i) begin
         if (calc_values_cordic_receive_counter_r == 0) begin
           rotation_fifo_out_dat_x_temp_r <= rotation_fifo_out_dat_x_i;
           rotation_fifo_out_dat_y_temp_r <= rotation_fifo_out_dat_y_i;
         end else if (calc_values_cordic_receive_counter_r == 1) begin
-          rotation_in_dat_x_o <= rotation_fifo_out_dat_x_temp_r;
-          rotation_in_dat_y_o <= rotation_fifo_out_dat_x_i;
-          rotation_in_dat_z_o <= angles_register_r[0];
-          rotation_in_vld_o <= 1;
+          rotation_in_dat_x_r <= rotation_fifo_out_dat_x_temp_r;
+          rotation_in_dat_y_r <= rotation_fifo_out_dat_x_i;
+          rotation_in_dat_z_r <= angles_register_r[0];
+          rotation_in_vld_r <= 1;
 
           rotation_fifo_out_dat_x_temp_r <= rotation_fifo_out_dat_y_i;
         end else if (calc_values_cordic_receive_counter_r == 2) begin
-          rotation_in_dat_x_o <= rotation_fifo_out_dat_y_temp_r;
-          rotation_in_dat_y_o <= rotation_fifo_out_dat_x_temp_r;
-          rotation_in_dat_z_o <= angles_register_r[0];
-          rotation_in_vld_o <= 1;
+          rotation_in_dat_x_r <= rotation_fifo_out_dat_y_temp_r;
+          rotation_in_dat_y_r <= rotation_fifo_out_dat_x_temp_r;
+          rotation_in_dat_z_r <= angles_register_r[0];
+          rotation_in_vld_r <= 1;
 
           rotation_fifo_out_dat_x_temp_r <= rotation_fifo_out_dat_x_i;
           rotation_fifo_out_dat_y_temp_r <= rotation_fifo_out_dat_y_i;
@@ -663,7 +688,7 @@ module jacobi_main_controller (
     end
 
     if (rst == 1) begin
-      rotation_fifo_out_rdy_o <= 0;
+      rotation_fifo_out_rdy_r <= 0;
       calc_values_valid_r <= 0;
     end
   end
@@ -672,11 +697,9 @@ module jacobi_main_controller (
   always_ff @(posedge clk) begin : calc_values_save_data_from_cordic_counter_p
     if (main_fsm_r == CALC_VALUES) begin
       if (calc_values_valid_r) begin
-        if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 3) begin
-          calc_values_save_data_from_cordic_counter_r <= calc_values_save_data_from_cordic_counter_r + 1;
-        end else begin
-          calc_values_save_data_from_cordic_counter_r <= 0;
-        end
+        calc_values_save_data_from_cordic_counter_r <= calc_values_save_data_from_cordic_counter_r + 1;
+      end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 1) begin
+        calc_values_save_data_from_cordic_counter_r <= 0;
       end
     end
 
@@ -722,30 +745,32 @@ module jacobi_main_controller (
           ram_en_a_r   <= 1;
           ram_we_a_r   <= 1;
           ram_addr_a_r <= value_write_ram_addr_a;
-          ram_din_a_o  <= rotation_fifo_out_dat_x_temp_r;
+          ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
 
           ram_en_b_r   <= 1;
           ram_we_b_r   <= 1;
           ram_addr_b_r <= value_write_ram_addr_b;
-          ram_din_b_o  <= rotation_fifo_out_dat_y_temp_r;
-
-          if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 2) begin
-            calc_values_saving_finished_r <= 1;
-          end
+          ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
         end else if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 2) begin
           ram_en_a_r   <= 1;
           ram_we_a_r   <= 1;
           ram_addr_a_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][0] + JACOBI_V_OFFSET;
-          ram_din_a_o  <= rotation_fifo_out_dat_x_temp_r;
+          ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
 
           ram_en_b_r   <= 1;
           ram_we_b_r   <= 1;
           ram_addr_b_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + indices_shift_register_r[0][1] + JACOBI_V_OFFSET;
-          ram_din_b_o  <= rotation_fifo_out_dat_y_temp_r;
+          ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
 
           calc_values_write_matrix_data_row_counter_r <= calc_values_write_matrix_data_row_counter_r + 1;
         end
-      end else begin
+      end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 1) begin
+        ram_en_a_r   <= 1;
+        ram_we_a_r   <= 1;
+        ram_addr_a_r <= value_write_ram_addr_a;
+        ram_din_a_r  <= 0;
+        
+        calc_values_saving_finished_r <= 1;
         calc_values_write_matrix_data_row_counter_r <= 0;
       end
     end else begin
@@ -755,7 +780,7 @@ module jacobi_main_controller (
 
     if (rst == 1) begin
       calc_values_write_matrix_data_row_counter_r <= 0;
-      calc_values_saving_finished_r <= 1;
+      calc_values_saving_finished_r <= 0;
     end
   end
 
@@ -778,6 +803,12 @@ module jacobi_main_controller (
   assign vectoring_in_dat_x_o = vectoring_in_dat_x_r;
   assign vectoring_in_dat_y_o = vectoring_in_dat_y_r;
   assign vectoring_in_vld_o = vectoring_in_vld_r;
+  assign rotation_in_dat_x_o = rotation_in_dat_x_r;
+  assign rotation_in_dat_y_o = rotation_in_dat_y_r;
+  assign rotation_in_dat_z_o = rotation_in_dat_z_r;
+  assign rotation_in_vld_o = rotation_in_vld_r;
+
+  assign rotation_fifo_out_rdy_o = rotation_fifo_out_rdy_r;
 
 endmodule
 

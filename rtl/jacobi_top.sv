@@ -144,7 +144,7 @@ module jacobi_top (
   
   jacobi_fifo fifo_i (
     .s_aclk(clk),
-    .s_aresetn(rst),
+    .s_aresetn(~rst),
 
     .s_axis_tvalid(rotation_out_vld),
     .s_axis_tdata({rotation_out_dat_x,rotation_out_dat_y}),
