@@ -118,7 +118,7 @@ class scoreboard;
       cordic_item item;
       scb_mbx.get(item);
 
-      if (abs(item.x_obtained,item.x_correct) > 1 || abs(item.y_obtained, item.y_correct) > 1 || abs(item.z_obtained, item.z_correct) > 1) begin
+      if (abs(item.x_obtained,item.x_correct) > 0 || abs(item.y_obtained, item.y_correct) > 0 || abs(item.z_obtained, item.z_correct) > 0) begin
         err_count++;
         $display ("T=%0t [Scoreboard] ERROR! Mismatch entry = %0d\ncorrect:  x = 0x%0h y = 0x%0h z = 0x%0h\nobtained: x = 0x%0h y = 0x%0h z = 0x%0h" ,
                   $time, n_entry, item.x_correct, item.y_correct, item.z_correct, item.x_obtained, item.y_obtained, item.z_obtained);

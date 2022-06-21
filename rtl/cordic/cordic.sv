@@ -21,9 +21,10 @@ module cordic #(
   reg signed [CORDIC_WORD_WIDTH-1:0] atan [0:CORDIC_N_STEPS-1] = {'h06488, 'h03B59, 'h01F5B, 'h00FEB, 'h007FD,
                                                                   'h00400, 'h00200, 'h00100, 'h00080, 'h00040, 
                                                                   'h00020, 'h00010, 'h00008, 'h00004, 'h00002, 'h00001};
-  reg [CORDIC_WORD_WIDTH-1:0] x_vec_r   [CORDIC_N_STAGES:0];
-  reg [CORDIC_WORD_WIDTH-1:0] y_vec_r   [CORDIC_N_STAGES:0];
-  reg [CORDIC_WORD_WIDTH-1:0] z_vec_r   [CORDIC_N_STAGES:0];
+                                                                  /*[25736, 15193, 8027, 4075, 2045, 1024, 512, 256, 128, 64, 32, 16, 8, 4, ...]*/
+  reg signed [CORDIC_WORD_WIDTH-1:0] x_vec_r   [CORDIC_N_STAGES:0];
+  reg signed [CORDIC_WORD_WIDTH-1:0] y_vec_r   [CORDIC_N_STAGES:0];
+  reg signed [CORDIC_WORD_WIDTH-1:0] z_vec_r   [CORDIC_N_STAGES:0];
   reg                         vld_vec_r [CORDIC_N_STAGES:0]; 
 
   assign x_vec_r[0]   = x_i;
