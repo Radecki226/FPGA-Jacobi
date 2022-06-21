@@ -11,8 +11,10 @@ module jacobi_main_controller (
 
   // Output interface to microcontroller
   output signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
-  output                                out_vld_o,
-  input                                 out_rdy_i,
+  output                                       out_vld_o,
+  output                                       out_last_o,
+  input                                        out_rdy_i,
+
 
   // Output data to pipelined vectoring cordic (angle calc)
   output [JACOBI_OUTPUT_WORD_WIDTH-1:0] vectoring_in_dat_x_o,
@@ -146,11 +148,21 @@ module jacobi_main_controller (
   reg unsigned [JACOBI_LOG2_N-1:0] current_indices_in_order_r [JACOBI_PAIR-1:0];
 
 
+  // Send data
+  reg unsigned [JACOBI_ADDR_WIDTH-1:0] send_data_counter_r;
+  reg                                  sender_vld_s;
+  reg                                  sender_vld_r;
+  reg                                  out_vld_r;
+  reg                                  last_s;
+  reg                                  last_r;
+  reg                                  out_last_r;
+
+
 
   /*******************
    * Type declarations
   *******************/
-  typedef enum {INIT, IDLE, RECEIVE_DATA, CALC_ANGLES_PUSH, CALC_ANGLES_STORE, CALC_VALUES, CHANGE_PAIR, DRAW_ROUND, SEND_DATA} main_fsm_t; //
+  typedef enum {INIT, IDLE, RECEIVE_DATA, CALC_ANGLES_PUSH, CALC_ANGLES_STORE, CALC_VALUES, CHANGE_PAIR, DRAW_ROUND, SEND_DATA, FINISH_SENDING} main_fsm_t; //
   main_fsm_t main_fsm_r;
 
   /***************
@@ -301,13 +313,53 @@ module jacobi_main_controller (
           calc_values_push_values_to_cordic_r <= 0;
         end
 
+        //Write matrix
+        if (calc_values_valid_r) begin
+          if (calc_values_save_data_from_cordic_counter_r < JACOBI_N - 2 || calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 2) begin
+            ram_en_a_r   <= 1;
+            ram_we_a_r   <= 1;
+            ram_addr_a_r <= value_write_ram_addr_a;
+            ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
+
+            ram_en_b_r   <= 1;
+            ram_we_b_r   <= 1;
+            ram_addr_b_r <= value_write_ram_addr_b;
+            ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
+          end else if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 2) begin
+            ram_en_a_r   <= 1;
+            ram_we_a_r   <= 1;
+            ram_addr_a_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
+            ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
+
+            ram_en_b_r   <= 1;
+            ram_we_b_r   <= 1;
+            ram_addr_b_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
+            ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
+
+            calc_values_write_matrix_data_row_counter_r <= calc_values_write_matrix_data_row_counter_r + 1;
+          end
+        end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 1) begin
+          ram_en_a_r   <= 1;
+          ram_we_a_r   <= 1;
+          ram_addr_a_r <= value_write_ram_addr_a;
+          ram_din_a_r  <= 0;
+
+          ram_we_b_r <= 0;
+          
+          calc_values_saving_finished_r <= 1;
+          calc_values_write_matrix_data_row_counter_r <= 0;
+
+        end
+
         if (calc_values_saving_finished_r) begin
           main_fsm_r <= CHANGE_PAIR;
+          ram_we_a_r <= 0; 
         end
         
       end
 
       CHANGE_PAIR: begin
+        calc_values_saving_finished_r <= 0;
         angles_register_r[0] <= angles_register_r[1];
         angles_register_r[1] <= angles_register_r[2];
         angles_register_r[2] <= angles_register_r[3];
@@ -347,7 +399,13 @@ module jacobi_main_controller (
         
 
       SEND_DATA: begin
-        main_fsm_r <= INIT;
+        ram_en_a_r <= 1;
+        ram_addr_a_r <= send_data_counter_r;
+        ram_en_b_r <= 0;
+
+        if (send_data_counter_r == JACOBI_MEM_SIZE-1) begin
+          main_fsm_r <= INIT;
+        end
       end
     endcase
 
@@ -369,6 +427,8 @@ module jacobi_main_controller (
       change_pair_pair_counter_r <= 0;
       calc_values_push_values_to_cordic_r <= 0;
       calc_values_get_matrix_data_row_counter_r <= 0;
+      calc_values_saving_finished_r <= 0;
+      calc_values_write_matrix_data_row_counter_r <= 0;
     end
 
   end
@@ -437,6 +497,14 @@ module jacobi_main_controller (
       value_write_a_matrix_row <= current_indices_in_order_r[0];
       value_write_a_matrix_col <= current_indices_in_order_r[1];
     end
+
+
+    if (main_fsm_r == SEND_DATA) begin
+      sender_vld_s = 1;
+    end else begin
+      sender_vld_s = 0;
+    end
+    
   end
 
   /******** Init column counter ********/
@@ -617,23 +685,6 @@ module jacobi_main_controller (
     end
   end
   
-  /********* Push values to cordic ******/
-  always_ff @(posedge clk) begin : calc_values_push_to_cordic_p
-    if (main_fsm_r == CALC_VALUES) begin
-      if (calc_values_push_values_to_cordic_one_cycle_delayed_r) begin
-        rotation_in_dat_x_r <= ram_dout_a_i;
-        rotation_in_dat_y_r <= ram_dout_b_i;
-        rotation_in_dat_z_r <= angles_register_r[0];
-        rotation_in_vld_r <= 1;
-      end else begin
-        rotation_in_vld_r <= 0;
-      end
-    end
-
-    if (rst == 1) begin
-      rotation_in_vld_r <= 0;
-    end
-  end
 
   /******** Cordic receive counter ****/
   always_ff @(posedge clk) begin : calc_values_cordic_receive_counter_p
@@ -655,6 +706,16 @@ module jacobi_main_controller (
   /******** Get data from cordic ******/
   always_ff @(posedge clk) begin : calc_values_get_data_from_cordic_p
     if (main_fsm_r == CALC_VALUES) begin
+
+      if (calc_values_push_values_to_cordic_one_cycle_delayed_r) begin
+        rotation_in_dat_x_r <= ram_dout_a_i;
+        rotation_in_dat_y_r <= ram_dout_b_i;
+        rotation_in_dat_z_r <= angles_register_r[0];
+        rotation_in_vld_r <= 1;
+      end else begin
+        rotation_in_vld_r <= 0;
+      end
+
       rotation_fifo_out_rdy_r <= 1;
       if (rotation_fifo_out_vld_i) begin
         if (calc_values_cordic_receive_counter_r == 0) begin
@@ -695,6 +756,7 @@ module jacobi_main_controller (
     if (rst == 1) begin
       rotation_fifo_out_rdy_r <= 0;
       calc_values_valid_r <= 0;
+      rotation_in_vld_r <= 0;
     end
   end
 
@@ -742,55 +804,40 @@ module jacobi_main_controller (
     end
   end
 
-  /********* Calc Values write matrix values ******/
-  always_ff @(posedge clk) begin : calc_values_write_matrix_data_p
-    if (main_fsm_r == CALC_VALUES) begin
-      if (calc_values_valid_r) begin
-        if (calc_values_save_data_from_cordic_counter_r < JACOBI_N - 2 || calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 2) begin
-          ram_en_a_r   <= 1;
-          ram_we_a_r   <= 1;
-          ram_addr_a_r <= value_write_ram_addr_a;
-          ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
+  always_ff @(posedge clk) begin : send_data_counter_p
 
-          ram_en_b_r   <= 1;
-          ram_we_b_r   <= 1;
-          ram_addr_b_r <= value_write_ram_addr_b;
-          ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
-        end else if (calc_values_save_data_from_cordic_counter_r < (JACOBI_N <<< 1) - 2) begin
-          ram_en_a_r   <= 1;
-          ram_we_a_r   <= 1;
-          ram_addr_a_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
-          ram_din_a_r  <= rotation_fifo_out_dat_x_temp_r;
-
-          ram_en_b_r   <= 1;
-          ram_we_b_r   <= 1;
-          ram_addr_b_r <= (calc_values_write_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
-          ram_din_b_r  <= rotation_fifo_out_dat_y_temp_r;
-
-          calc_values_write_matrix_data_row_counter_r <= calc_values_write_matrix_data_row_counter_r + 1;
-        end
-      end else if (calc_values_save_data_from_cordic_counter_r == (JACOBI_N <<< 1) - 1) begin
-        ram_en_a_r   <= 1;
-        ram_we_a_r   <= 1;
-        ram_addr_a_r <= value_write_ram_addr_a;
-        ram_din_a_r  <= 0;
-        
-        calc_values_saving_finished_r <= 1;
-        calc_values_write_matrix_data_row_counter_r <= 0;
+    if (main_fsm_r == SEND_DATA && out_rdy_i == 1) begin
+      if (send_data_counter_r == JACOBI_MEM_SIZE-1) begin
+        send_data_counter_r <= 0;
+      end else begin
+        send_data_counter_r <= send_data_counter_r + 1;
       end
-    end else begin
-      calc_values_saving_finished_r <= 0;
     end
-
 
     if (rst == 1) begin
-      calc_values_write_matrix_data_row_counter_r <= 0;
-      calc_values_saving_finished_r <= 0;
+      send_data_counter_r <= 0;
     end
+
   end
 
+  /******** Calc values write calc column indexes **/
+  always_ff @(posedge clk) begin : out_vld_control_p
 
+    //Output valid must be 2 cycles delayed
+    sender_vld_r <= sender_vld_s;
+    out_vld_r <= sender_vld_r;
+    
+    //last as well
+    last_r <= last_s;
+    out_last_r <= last_r;
 
+    if (rst == 1) begin
+      sender_vld_r <= 0;
+      out_vld_r <= 0;
+    end
+
+  end
+    
 
 
   assign in_rdy_o = in_rdy;
@@ -814,6 +861,9 @@ module jacobi_main_controller (
   assign rotation_in_vld_o = rotation_in_vld_r;
 
   assign rotation_fifo_out_rdy_o = rotation_fifo_out_rdy_r;
+  assign out_vld_o = out_vld_r;
+  assign out_dat_o = ram_dout_a_i;
+  assign out_last_o = out_last_r;
 
 endmodule
 
