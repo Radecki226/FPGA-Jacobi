@@ -200,5 +200,6 @@ class Jacobi_TV_generator:
             A = (np.random.rand(self.N,self.N)*2)-1
             A = (A + A.T)/2
             matrices.append(Fxp(A, n_word = self.n_frac+1, n_frac = self.n_frac, signed = self.is_signed))
-        self.generate_files(matrices)
+        matrices2 = [matrices[1], matrices[0]]
+        self.generate_files(matrices2)
             

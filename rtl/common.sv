@@ -24,8 +24,16 @@ package common;
   function [FXP_MAX_WIDTH-1:0] fxp_round;
     input signed [FXP_MAX_WIDTH-1:0] in_dat;
     input integer N;
-    begin 
+    reg signed [FXP_MAX_WIDTH-1:0] shifted_n_minus_1;
+
+    begin
+      shifted_n_minus_1 = (in_dat >>> N-1);
       fxp_round = (in_dat + (1 <<< N-1)) >>> N;
+      if ((shifted_n_minus_1 <<< N-1) == in_dat && shifted_n_minus_1[0] == 1) begin //Case with 0.5
+        if (fxp_round[0] == 1) begin //If output is odd round to even
+          fxp_round = fxp_round - 1;
+        end
+      end
     end
   endfunction
 endpackage

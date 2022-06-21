@@ -139,7 +139,7 @@ module jacobi_main_controller (
   reg unsigned                           calc_values_saving_finished_r;
 
   reg unsigned [JACOBI_LOG2_N_PAIRS-1:0] change_pair_pair_counter_r;
-  reg unsigned [4:0]                     draw_round_counter_r;
+  reg unsigned [5:0]                     draw_round_counter_r;
 
   reg unsigned [2:0]                     calc_values_write_matrix_data_row_counter_r;
 
@@ -276,10 +276,35 @@ module jacobi_main_controller (
         end
       end
 
+
       CALC_VALUES: begin
+        
+        //Receive data from memory and push to cordic
+        if (calc_values_in_one_pair_counter_r < JACOBI_N) begin
+          ram_en_a_r   <= 1;
+          ram_we_a_r   <= 0;
+          ram_addr_a_r <= value_ram_addr_a;
+          ram_en_b_r   <= 1;
+          ram_we_b_r   <= 0;
+          ram_addr_b_r <= value_ram_addr_b;
+          calc_values_push_values_to_cordic_r <= 1;
+        end else if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
+          ram_en_a_r   <= 1;
+          ram_we_a_r   <= 0;
+          ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
+          ram_en_b_r   <= 1;
+          ram_we_b_r   <= 0;
+          ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
+          calc_values_push_values_to_cordic_r <= 1;
+          calc_values_get_matrix_data_row_counter_r <= calc_values_get_matrix_data_row_counter_r + 1;
+        end else begin
+          calc_values_push_values_to_cordic_r <= 0;
+        end
+
         if (calc_values_saving_finished_r) begin
           main_fsm_r <= CHANGE_PAIR;
         end
+        
       end
 
       CHANGE_PAIR: begin
@@ -322,7 +347,7 @@ module jacobi_main_controller (
         
 
       SEND_DATA: begin
-        main_fsm_r <= IDLE;
+        main_fsm_r <= INIT;
       end
     endcase
 
@@ -342,6 +367,8 @@ module jacobi_main_controller (
       indices_shift_register_r[3][1] <= 4;
       draw_round_counter_r <= 0;
       change_pair_pair_counter_r <= 0;
+      calc_values_push_values_to_cordic_r <= 0;
+      calc_values_get_matrix_data_row_counter_r <= 0;
     end
 
   end
@@ -577,40 +604,7 @@ module jacobi_main_controller (
     end
   end
 
-  /********* Calc Values matrix value getter ******/
-  always_ff @(posedge clk) begin : calc_values_get_matrix_data_p
-    if (main_fsm_r == CALC_VALUES) begin
-      if (calc_values_in_one_pair_counter_r < JACOBI_N) begin
-        ram_en_a_r   <= 1;
-        ram_we_a_r   <= 0;
-        ram_addr_a_r <= value_ram_addr_a;
-        ram_en_b_r   <= 1;
-        ram_we_b_r   <= 0;
-        ram_addr_b_r <= value_ram_addr_b;
-        calc_values_push_values_to_cordic_r <= 1;
-      end else if (calc_values_in_one_pair_counter_r < JACOBI_N <<< 1) begin
-        ram_en_a_r   <= 1;
-        ram_we_a_r   <= 0;
-        ram_addr_a_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[0] + JACOBI_V_OFFSET;
-        ram_en_b_r   <= 1;
-        ram_we_b_r   <= 0;
-        ram_addr_b_r <= (calc_values_get_matrix_data_row_counter_r <<< 3) + current_indices_in_order_r[1] + JACOBI_V_OFFSET;
-        calc_values_push_values_to_cordic_r <= 1;
-        calc_values_get_matrix_data_row_counter_r <= calc_values_get_matrix_data_row_counter_r + 1;
-      end else begin
-        calc_values_push_values_to_cordic_r <= 0;
-      end
-    end else begin
-      calc_values_get_matrix_data_row_counter_r <= 0;
-      calc_values_push_values_to_cordic_r <= 0;
-    end
 
-
-    if (rst == 1) begin
-      calc_values_get_matrix_data_row_counter_r <= 0;
-      calc_values_push_values_to_cordic_r <= 0;
-    end
-  end
 
   /********* Delay push values to cordic flag ****/
   always_ff @(posedge clk) begin : calc_values_delay_push_values_to_cordic_p

@@ -62,7 +62,7 @@ module calc_angle_pipeline(
   
   //output stage
   always_ff @(posedge clk) begin : add_pi_and_shift_p
-    angle_r   <= (cordic_z + pi_shift_reg_r[CORDIC_N_STAGES-1]) >>> 1;
+    angle_r   <= fxp_round(cordic_z + pi_shift_reg_r[CORDIC_N_STAGES-1], 1);
     out_vld_r <= cordic_vld;
   end
 

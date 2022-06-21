@@ -165,7 +165,7 @@ class Cordic_TV_generator:
     def run(self):
         vectors = []
         for i in range(self.n_vectors):        
-            x_in = Fxp(np.random.rand(),n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
+            x_in = Fxp(np.random.rand()*2-1,n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
             y_in = Fxp(np.random.rand()*2-1,n_word = self.n_word, n_frac = self.n_frac, signed = self.is_signed)
             
             if self.mode == "vectoring":
