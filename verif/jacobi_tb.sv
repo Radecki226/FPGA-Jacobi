@@ -119,6 +119,7 @@ class scoreboard;
   int n_matrix = 0;
   int n_entry = 0;
   int err_count = 0;
+  int success_count = 0;
   string which = "eigenvalues";
   task run();
     forever begin
@@ -130,6 +131,7 @@ class scoreboard;
         $display ("T=%0t [Scoreboard] ERROR! Mismatch matrix = %0d %s entry = %0d correct = 0x%0h obtained = 0x%0h",
                   $time, n_matrix, which, n_entry, item.correct_data, item.obtained_data);
       end else begin
+        success_count++;
         $display ("T=%0t [Scoreboard] PASS! matrix = %0d %s entry = %0d", $time, n_matrix, which, n_entry);
       end
 
@@ -210,7 +212,7 @@ interface jacobi_if (input bit clk);
   logic                   in_vld;
   logic                   in_rdy;
 
-  logic [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat;
+  logic [AXI4_FIFO_WORD_WIDTH-1:0] out_dat;
   logic                   out_vld;
   logic                   out_rdy;
 
@@ -228,7 +230,7 @@ module tb;
 
   jacobi_top u0(
               .clk(clk),
-              .rst(_if.rst),
+              .rstn(~_if.rst),
 
               .in_dat_i(_if.in_dat),
               .in_vld_i(_if.in_vld),
@@ -249,8 +251,17 @@ module tb;
     t0.jif = _if;
     t0.run();
 
-    #10000
-    $display("[TB] Err count = %0d", t0.e0.s0.err_count);
+    //#10000
+    //$display("[TB] Err count = %0d", t0.e0.s0.err_count);
+    
+    #90000
+    if (t0.e0.s0.success_count + t0.e0.s0.err_count == 200) begin
+        if (t0.e0.s0.success_count == 200) begin
+          $display("SIMULATION PASSED!");
+        end else begin
+          $display("SIMULATION FAILED!");
+        end
+    end
     
     // Because multiple components and clock are running
     // in the background, we need to call $finish explicitly

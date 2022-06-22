@@ -2,7 +2,7 @@ załadowanie danych: 64 takty
 
 round:
 cordic vectoring: 15 + kilka = 25
-cordic rotation: 4 * (15 + kilkanaście = 30) = 120
+cordic rotation: 4 * (17 + 19 + 17 czyli około 55) = 220
 
 sweep: 
 7 rund 
@@ -11,7 +11,7 @@ calosc:
 
 4 sweepy
 
-czyli 28*120 = 40us
+czyli 28*245 = 70us
 
 
 Dla 12 byłoby:
