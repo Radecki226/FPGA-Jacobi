@@ -26,17 +26,17 @@ module jacobi_main_controller (
   input                                 vectoring_out_vld_i,
 
   //Memory interface
-  output                                ram_en_a_o,
-  output                                ram_we_a_o,
-  output [JACOBI_ADDR_WIDTH-1:0]        ram_addr_a_o,
-  output [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_a_o,
-  input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_a_i,
+  output                                       ram_en_a_o,
+  output                                       ram_we_a_o,
+  output        [JACOBI_ADDR_WIDTH-1:0]        ram_addr_a_o,
+  output signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_a_o,
+  input  signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_a_i,
 
-  output                                ram_en_b_o,
-  output                                ram_we_b_o,
-  output [JACOBI_ADDR_WIDTH-1:0]        ram_addr_b_o,
-  output [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_b_o,
-  input  [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_b_i,
+  output                                       ram_en_b_o,
+  output                                       ram_we_b_o,
+  output        [JACOBI_ADDR_WIDTH-1:0]        ram_addr_b_o,
+  output signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_din_b_o,
+  input  signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] ram_dout_b_i,
 
   // Output data to rotation cordic
   output [JACOBI_OUTPUT_WORD_WIDTH-1:0] rotation_in_dat_x_o,
@@ -876,6 +876,3 @@ module jacobi_main_controller (
   assign out_last_o = out_last_r;
 
 endmodule
-
-
-
