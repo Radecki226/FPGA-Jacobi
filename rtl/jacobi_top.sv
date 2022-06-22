@@ -1,15 +1,16 @@
 import common::*;
 module jacobi_top (
   input                       clk,
-  input                       rst, 
+  input                       rstn, 
 
   input [JACOBI_INPUT_WORD_WIDTH-1:0] in_dat_i,
   input                       in_vld_i,
   output                      in_rdy_o,
 
-  output [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
-  output                      out_vld_o,
-  input                       out_rdy_i
+  output [AXI4_FIFO_WORD_WIDTH-1:0] out_dat_o,
+  output                            out_vld_o,
+  output                            out_last_o,
+  input                             out_rdy_i
 );
 
   /*********************
@@ -57,7 +58,7 @@ module jacobi_top (
   ***************/
   jacobi_main_controller main_controller (
     .clk(clk),
-    .rst(rst),
+    .rst(~rstn),
     
     .in_dat_i(in_dat_i),
     .in_vld_i(in_vld_i),
@@ -65,6 +66,7 @@ module jacobi_top (
 
     .out_dat_o(out_dat_o),
     .out_vld_o(out_vld_o),
+    .out_last_o(out_last_o),
     .out_rdy_i(out_rdy_i),
 
     .vectoring_in_dat_x_o(vectoring_in_dat_x),
@@ -100,7 +102,7 @@ module jacobi_top (
 
   calc_angle_pipeline calc_angle_pipeline_i (
     .clk(clk),
-    .rst(rst),
+    .rst(~rstn),
 
     .x_i(vectoring_in_dat_x),
     .y_i(vectoring_in_dat_y),
@@ -128,7 +130,7 @@ module jacobi_top (
 
   cordic #(.MODE("rotation")) rotation_cordic (
     .clk(clk),
-    .rst(rst),
+    .rst(~rstn),
 
     .x_i(rotation_in_dat_x),
     .y_i(rotation_in_dat_y),
@@ -144,7 +146,7 @@ module jacobi_top (
   
   jacobi_fifo fifo_i (
     .s_axis_aclk(clk),
-    .s_axis_aresetn(~rst),
+    .s_axis_aresetn(rstn),
 
     .s_axis_tvalid(rotation_out_vld),
     .s_axis_tdata({rotation_out_dat_x,rotation_out_dat_y}),

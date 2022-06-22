@@ -10,7 +10,7 @@ module jacobi_main_controller (
   output                                in_rdy_o,
 
   // Output interface to microcontroller
-  output signed [JACOBI_OUTPUT_WORD_WIDTH-1:0] out_dat_o,
+  output signed [AXI4_FIFO_WORD_WIDTH-1:0]     out_dat_o,
   output                                       out_vld_o,
   output                                       out_last_o,
   input                                        out_rdy_i,
@@ -501,8 +501,16 @@ module jacobi_main_controller (
 
     if (main_fsm_r == SEND_DATA) begin
       sender_vld_s = 1;
+
+      if (send_data_counter_r == JACOBI_MEM_SIZE-1) begin
+        last_s <= 1;
+      end else begin
+        last_s <= 0;
+      end
+      
     end else begin
       sender_vld_s = 0;
+      last_s <= 0;
     end
     
   end
@@ -834,6 +842,8 @@ module jacobi_main_controller (
     if (rst == 1) begin
       sender_vld_r <= 0;
       out_vld_r <= 0;
+      last_r <= 0;
+      out_last_r <= 0;
     end
 
   end
