@@ -20,18 +20,18 @@
      borderopacity="1.0"
      inkscape:pageshadow="2"
      inkscape:pageopacity="1"
-     inkscape:pagecheckerboard="0"
+     inkscape:pagecheckerboard="false"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.428333"
-     inkscape:cx="358.80987"
-     inkscape:cy="342.70719"
+     inkscape:zoom="0.7141665"
+     inkscape:cx="146.32442"
+     inkscape:cy="448.7749"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:window-y="1341"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer2" />
   <defs
      id="defs2">
     <rect
@@ -346,7 +346,25 @@
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
          id="path22522-1-6" />
     </marker>
+    <rect
+       x="283.81406"
+       y="94.837669"
+       width="191.819"
+       height="22.508436"
+       id="rect19273-5-5-9" />
   </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.64547;stroke-linejoin:round;stroke-opacity:0"
+       id="rect6239"
+       width="227.69881"
+       height="305.86975"
+       x="-4.0025282"
+       y="-6.2253985" />
+  </g>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
@@ -370,8 +388,8 @@
        id="rect846-0-5-6"
        width="20.928587"
        height="11.327297"
-       x="87.948814"
-       y="101.28648" />
+       x="106.2875"
+       y="107.58462" />
     <rect
        style="fill:#e9ddaf;stroke:#000000;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect846-0-54"
@@ -395,11 +413,11 @@
        y="0"><tspan
          x="180.58008"
          y="174.99679"
-         id="tspan1419">MAIN
+         id="tspan6463">MAIN
 </tspan><tspan
          x="156.11426"
          y="189.99679"
-         id="tspan1421">CONTROLLER</tspan></text>
+         id="tspan6465">CONTROLLER</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(0.26458333)"
@@ -414,10 +432,10 @@
        y="0"><tspan
          x="288.79395"
          y="105.78585"
-         id="tspan1423">DUAL PORT </tspan><tspan
+         id="tspan6467">DUAL PORT </tspan><tspan
          x="310.03418"
          y="120.78585"
-         id="tspan1425">RAM</tspan></text>
+         id="tspan6469">RAM</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,12.24648,19.630071)"
@@ -427,25 +445,35 @@
        y="0"><tspan
          x="292.08691"
          y="105.78585"
-         id="tspan1427">ROTATION
+         id="tspan6471">ROTATION
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan1429">CORDIC</tspan></text>
+         id="tspan6473">CORDIC</tspan></text>
     <text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,12.730419,77.045294)"
+       transform="matrix(0.26458333,0,0,0.26458333,31.069105,83.343428)"
        id="text19271-3-7"
        style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect19273-5-5)"
        x="30.366211"
        y="0"><tspan
          x="287.16797"
          y="105.78585"
-         id="tspan1431">VECTORING
+         id="tspan6475">VECTORING
 </tspan><tspan
          x="298.94238"
          y="120.78585"
-         id="tspan1433">CORDIC</tspan></text>
+         id="tspan6477">CORDIC</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,7.3410898,73.61795)"
+       id="text19271-3-7-4"
+       style="font-size:12px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect19273-5-5-9)"
+       x="30.366211"
+       y="0"><tspan
+         x="311.66406"
+         y="105.78585"
+         id="tspan6479">CALC ANGLE PIPELINE</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-1)"
        d="m 73.266469,48.67231 13.324636,0.01356"
@@ -503,7 +531,7 @@
        style="font-size:12px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect37048)"><tspan
          x="255"
          y="519.94796"
-         id="tspan1435">RAM:</tspan></text>
+         id="tspan6481">RAM:</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 126.77157,153.18663 h 33.07292"
@@ -515,7 +543,7 @@
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan1437">W</tspan></text>
+         id="tspan6483">W</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,68.180602,6.0384858)"
@@ -523,7 +551,7 @@
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect40546-0)"><tspan
          x="277.89258"
          y="582.51809"
-         id="tspan1439">V</tspan></text>
+         id="tspan6485">V</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,3.7417734,3.367596)"
@@ -531,7 +559,7 @@
        style="font-size:20px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect44589)"><tspan
          x="138.56055"
          y="87.246606"
-         id="tspan1441">TOP</tspan></text>
+         id="tspan6487">TOP</tspan></text>
     <rect
        style="fill:#e9ddaf;fill-opacity:1;stroke:#000000;stroke-width:0.264999;stroke-linejoin:round"
        id="rect4458"
@@ -546,10 +574,17 @@
        style="font-size:5.33333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect5870)"><tspan
          x="577"
          y="243.86576"
-         id="tspan1443">FIFO</tspan></text>
+         id="tspan6489">FIFO</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1267);stroke-miterlimit:4;stroke-dasharray:none"
        d="m 124.28801,48.749476 7.71426,-0.0083 v 11.25306 H 74.058525"
        id="path2431" />
+    <rect
+       style="fill:#ffffff;fill-opacity:0;stroke:#000000;stroke-width:0.641006;stroke-linejoin:round"
+       id="rect1274"
+       width="43.390217"
+       height="24.310574"
+       x="88.151764"
+       y="97.321114" />
   </g>
 </svg>
