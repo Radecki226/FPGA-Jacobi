@@ -23,6 +23,9 @@ pipenv jupyter lab
 - `docs`  : documentation, drawings, etc..
 - `rtl`   : register tranfer level code 
 - `verif` : systemverilog verification of given circuit
+- `soft`  : software necessary to run application
+
+Moreover `jacobi_project.rar` contains packed vivado project and `Metoda_Jacobiego.pdf` contains project report.
 
 ## Circuit main schematic
 
